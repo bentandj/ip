@@ -76,6 +76,10 @@ public class Pecky {
         }
 
         if (args[0].equals("todo")) {
+            if (args.length == 1) {
+                printOutput("OOPS!!! The description of a todo cannot be empty.");
+                return 0;
+            }
             addTask(new Todo(s.substring(5)));
             return 0;
         }
@@ -103,7 +107,7 @@ public class Pecky {
             return 0;
         }
 
-        addTask(new Task(s));
+        printOutput("OOPS!!! I'm sorry, but I don't know what that means :-(");
         return 0;
     }
 
