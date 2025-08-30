@@ -30,6 +30,49 @@ public class Pecky {
         }
     }
 
+    private static class Todo extends Task {
+
+        public Todo(String description) {
+            super(description);
+        }
+
+        @Override
+        public String toString() {
+            return "[T]" + super.toString();
+        }
+    }
+
+    private static class Deadline extends Task {
+
+        protected String by;
+
+        public Deadline(String description, String by) {
+            super(description);
+            this.by = by;
+        }
+
+        @Override
+        public String toString() {
+            return "[D]" + super.toString() + " (by: " + by + ")";
+        }
+    }
+
+    private static class Event extends Task {
+        protected String from;
+        protected String to;
+
+        public Event(String description, String from, String to) {
+            super(description);
+            this.from = from;
+            this.to = to;
+        }
+
+        @Override
+        public String toString() {
+            return "[E]" + super.toString() + " (from: " + from + " to: " + to + ")";
+        }
+    }
+
     private static String HELLO = "Hello! I'm Pecky!\n" +
             "What can I do for you?";
 
@@ -50,7 +93,15 @@ public class Pecky {
         return scanner.nextLine();
     }
 
+    private static void addTask(Task t) {
+        LIST[LIST_SIZE] = t;
+        LIST_SIZE += 1;
+        printOutput("Got it. I've added this task: \n  " + t + "\nNow you have " + LIST_SIZE + " tasks in the list.");
+    }
+
     private static int command(String s) {
+        String[] args = s.split(" ");
+
         if (s.equals("bye")) {
             printOutput(BYE);
             return 1;
@@ -80,23 +131,49 @@ public class Pecky {
             return 0;
         }
 
-        if (s.length() >= 6 && s.substring(0, 5).equals("mark ")) {
+        if (args[0].equals("mark")) {
             int index = Integer.parseInt(s.substring(5));
             LIST[index-1].markDone();
             printOutput("Nice! I've marked this task as done:\n  " + LIST[index-1].toString());
             return 0;
         }
 
-        if (s.length() >= 8 && s.substring(0, 7).equals("unmark ")) {
+        if (args[0].equals("unmark")) {
             int index = Integer.parseInt(s.substring(7));
             LIST[index-1].markNotDone();
             printOutput("OK, I've marked this task as not done yet:\n  " + LIST[index-1].toString());
             return 0;
         }
 
-        LIST[LIST_SIZE] = new Task(s);
-        LIST_SIZE += 1;
-        printOutput("added: " + s);
+        if (args[0].equals("todo")) {
+            addTask(new Todo(s.substring(5)));
+            return 0;
+        }
+
+        if (s.length() >= 6 && s.substring(0, 5).equals("todo ")) {
+            addTask(new Todo(s));
+        }
+
+        if (args[0].equals("deadline")) {
+            s = s.substring(9).trim();
+            String[] parts = s.split(" /by ");
+            String description = parts[0].trim();
+            String by = parts[1].trim();
+            addTask(new Deadline(description, by));
+            return 0;
+        }
+
+
+        if (args[0].equals("event")) {
+            s = s.substring(6).trim();
+            String[] parts = s.split(" /from ");
+            String description = parts[0].trim();
+            String[] timeParts = parts[1].split(" /to ");
+            addTask(new Event(description, timeParts[0].trim(), timeParts[1].trim()));
+            return 0;
+        }
+
+        addTask(new Task(s));
         return 0;
     }
 
