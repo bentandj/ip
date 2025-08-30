@@ -1,23 +1,35 @@
-import java.io.*;
+import java.util.Scanner;
 
 public class Pecky {
-    public static void main(String[] args) throws IOException {
-        BufferedReader br = new BufferedReader(new FileReader("./src/main/java/level0output"));
-        try {
-            StringBuilder sb = new StringBuilder();
-            String line = br.readLine();
 
-            while (line != null) {
-                sb.append(line);
-                sb.append(System.lineSeparator());
-                line = br.readLine();
-            }
-            String level0output = sb.toString();
-            System.out.println(level0output);
-        } catch (IOException e) {
-            throw new RuntimeException(e);
-        } finally {
-            br.close();
+    private static String HELLO = "Hello! I'm Pecky!\n" +
+            "What can I do for you?";
+
+    private static String BYE = "Bye. Hope to see you again soon!";
+
+    private static void printOutput(String s) {
+        System.out.println("____________________________________________________________");
+        System.out.println(s);
+        System.out.println("____________________________________________________________");
+    }
+
+    private static String takeInput() {
+        Scanner scanner = new Scanner(System.in);
+        return scanner.nextLine();
+    }
+
+    private static int command(String s) {
+        if (s.equals("bye")) {
+            printOutput(BYE);
+            return 1;
         }
+
+        printOutput(s);
+        return 0;
+    }
+
+    public static void main(String[] args) {
+        printOutput(HELLO);
+        while (command(takeInput()) == 0);
     }
 }
