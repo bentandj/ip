@@ -8,7 +8,7 @@ public class Pecky {
 
     private static String BYE = "Bye. Hope to see you again soon!";
 
-    private static Task[] LIST = new Task[100];
+    private static ArrayList<Task> LIST = new ArrayList<Task>(100);
     private static int LIST_SIZE = 0;
     private static StringBuilder LIST_STRING = new StringBuilder();
 
@@ -24,9 +24,16 @@ public class Pecky {
     }
 
     private static void addTask(Task t) {
-        LIST[LIST_SIZE] = t;
+        LIST.add(t);
         LIST_SIZE += 1;
         printOutput("Got it. I've added this task: \n  " + t + "\nNow you have " + LIST_SIZE + " tasks in the list.");
+    }
+
+    private static void deleteTask(int t) {
+        Task taskRemoved = LIST.get(t-1);
+        LIST.remove(t-1);
+        LIST_SIZE -= 1;
+        printOutput("     Noted. I've removed this task:\n  " + taskRemoved + "\nNow you have " + LIST_SIZE + " tasks in the list.");
     }
 
     private static int command(String s) {
@@ -48,13 +55,13 @@ public class Pecky {
             for (int i=0; i<LIST_SIZE-1; i++) {
                 LIST_STRING.append(i+1);
                 LIST_STRING.append(". ");
-                LIST_STRING.append(LIST[i].toString());
+                LIST_STRING.append(LIST.get(i).toString());
                 LIST_STRING.append("\n");
             }
 
             LIST_STRING.append(LIST_SIZE);
             LIST_STRING.append(". ");
-            LIST_STRING.append(LIST[LIST_SIZE-1].toString());
+            LIST_STRING.append(LIST.get(LIST_SIZE-1).toString());
 
             printOutput(LIST_STRING.toString());
 
@@ -63,15 +70,15 @@ public class Pecky {
 
         if (args[0].equals("mark")) {
             int index = Integer.parseInt(s.substring(5));
-            LIST[index-1].markDone();
-            printOutput("Nice! I've marked this task as done:\n  " + LIST[index-1].toString());
+            LIST.get(index-1).markDone();
+            printOutput("Nice! I've marked this task as done:\n  " + LIST.get(index-1).toString());
             return 0;
         }
 
         if (args[0].equals("unmark")) {
             int index = Integer.parseInt(s.substring(7));
-            LIST[index-1].markNotDone();
-            printOutput("OK, I've marked this task as not done yet:\n  " + LIST[index-1].toString());
+            LIST.get(index-1).markNotDone();
+            printOutput("OK, I've marked this task as not done yet:\n  " + LIST.get(index-1).toString());
             return 0;
         }
 
@@ -104,6 +111,12 @@ public class Pecky {
             String description = parts[0].trim();
             String[] timeParts = parts[1].split(" /to ");
             addTask(new Event(description, timeParts[0].trim(), timeParts[1].trim()));
+            return 0;
+        }
+
+        if (args[0].equals("delete")) {
+            int index = Integer.parseInt(s.substring(7));
+            deleteTask(index);
             return 0;
         }
 
