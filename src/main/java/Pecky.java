@@ -1,5 +1,10 @@
+import java.io.IOException;
+import java.nio.file.FileAlreadyExistsException;
 import java.util.ArrayList;
 import java.util.Scanner;
+import java.nio.file.Files;
+import java.nio.file.Path;
+import java.nio.file.Paths;
 
 public class Pecky {
 
@@ -11,6 +16,9 @@ public class Pecky {
     private static ArrayList<Task> LIST = new ArrayList<Task>(100);
     private static int LIST_SIZE = 0;
     private static StringBuilder LIST_STRING = new StringBuilder();
+
+    private static Path taskFileFolder = Paths.get("./data");
+    private static Path taskFile = Paths.get("./data/pecky.txt");
 
     private static void printOutput(String s) {
         System.out.println("____________________________________________________________");
@@ -34,6 +42,10 @@ public class Pecky {
         LIST.remove(t-1);
         LIST_SIZE -= 1;
         printOutput("     Noted. I've removed this task:\n  " + taskRemoved + "\nNow you have " + LIST_SIZE + " tasks in the list.");
+    }
+
+    private static void updateTaskFile() {
+        
     }
 
     private static int command(String s) {
@@ -124,8 +136,27 @@ public class Pecky {
         return 0;
     }
 
+    private static void initialize() {
+        try {
+            Files.createDirectories(taskFileFolder);
+        } catch (IOException e) {
+            System.err.println("Failed to create folder: " + e.getMessage());
+        }
+
+        try {
+            Files.createFile(taskFile);
+        } catch (FileAlreadyExistsException e) {
+            // no need to do anything
+        } catch (IOException e) {
+            System.err.println("An I/O error occurred: " + e.getMessage());
+        }
+    }
+
     public static void main(String[] args) {
+        initialize();
+
         printOutput(HELLO);
+
         while (command(takeInput()) == 0);
     }
 }
