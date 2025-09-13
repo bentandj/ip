@@ -7,11 +7,11 @@ public class Pecky {
     protected static void list() {
         SB = new StringBuilder();
         SB.append("Here are the tasks in your list:\n");
-        for (int i = 0; i < Storage.num(); i++) {
+        for (int i = 0; i < TaskList.size(); i++) {
             SB.append("\n");
             SB.append(i+1);
             SB.append(". ");
-            SB.append(Storage.get(i).toString());
+            SB.append(TaskList.get(i).toString());
         }
 
         Ui.print(SB.toString());
@@ -47,12 +47,12 @@ public class Pecky {
         SB.append(dateTime.format(Task.TO_STRING_FORMATTER));
         SB.append(" :\n");
 
-        for (int i = 0; i < Storage.num(); i++) {
-            if (Storage.get(i).onDay(dateTime)) {
+        for (int i = 0; i < TaskList.size(); i++) {
+            if (TaskList.get(i).onDay(dateTime)) {
                 SB.append("\n");
                 SB.append(i+1);
                 SB.append(". ");
-                SB.append(Storage.get(i).toString());
+                SB.append(TaskList.get(i).toString());
             }
         }
 
