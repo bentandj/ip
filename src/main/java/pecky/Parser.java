@@ -1,3 +1,5 @@
+package pecky;
+
 import java.time.LocalDateTime;
 
 public class Parser {
@@ -17,7 +19,6 @@ public class Parser {
                 Pecky.list();
                 return 0;
             case "mark":
-
                 try {
                     index = Integer.parseInt(s.substring(5));
                 } catch (NumberFormatException e) {
