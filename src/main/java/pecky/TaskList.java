@@ -50,6 +50,9 @@ public class TaskList {
 
     @Override
     public String toString() {
+        if (size() == 0) {
+            return "";
+        }
         StringBuilder SB = new StringBuilder();
         for (int i = 0; i < size() - 1; i++) {
             SB.append(i+1);
