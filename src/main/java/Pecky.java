@@ -176,7 +176,15 @@ public class Pecky {
         String[] timeParts = parts[1].split(" /to ");
         String from = timeParts[0];
         String to = timeParts[1];
-        addTask(new Event(description, from, to));
+        LocalDateTime fromDate = convertStringToDate(from);
+        if (fromDate == null) {
+            return;
+        }
+        LocalDateTime toDate = convertStringToDate(to);
+        if (toDate == null) {
+            return;
+        }
+        addTask(new Event(description, fromDate, toDate));
     }
 
     private static void delete(String s) {
@@ -249,7 +257,15 @@ public class Pecky {
                     }
                     newTask = new Deadline(args[2], byDate);
                 } else if (args[0].equals("E")) {
-                    newTask = new Event(args[2], args[3], args[4]);
+                    LocalDateTime fromDate = convertStringToDate(args[3]);
+                    if (fromDate == null) {
+                        return;
+                    }
+                    LocalDateTime toDate = convertStringToDate(args[4]);
+                    if (toDate == null) {
+                        return;
+                    }
+                    newTask = new Event(args[2], fromDate, toDate);
                 } else {
                     System.out.println("Unexpected line in task file: " + line);
                     return;
