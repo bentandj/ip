@@ -5,6 +5,8 @@ import java.util.Scanner;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
+import java.nio.file.StandardOpenOption;
+import java.util.stream.Stream;
 
 public class Pecky {
 
@@ -16,9 +18,11 @@ public class Pecky {
     private static ArrayList<Task> LIST = new ArrayList<Task>(100);
     private static int LIST_SIZE = 0;
     private static StringBuilder LIST_STRING = new StringBuilder();
+    private static StringBuilder SB = new StringBuilder();
 
     private static Path taskFileFolder = Paths.get("./data");
     private static Path taskFile = Paths.get("./data/pecky.txt");
+    // private static Path taskFile = Paths.get("./data/pecky.txt");
 
     private static void printOutput(String s) {
         System.out.println("____________________________________________________________");
@@ -31,14 +35,32 @@ public class Pecky {
         return scanner.nextLine();
     }
 
-    private static void addTask(Task t) {
+    private static void addTaskSilent(Task t) {
         LIST.add(t);
         LIST_SIZE += 1;
+    }
+
+    private static void addTask(Task t) {
+        addTaskSilent(t);
         printOutput("Got it. I've added this task: \n  " + t + "\nNow you have " + LIST_SIZE + " tasks in the list.");
     }
 
-    private static void updateTaskFile() {
+    private static void writeTaskFile() {
+        SB = new StringBuilder();
+        for (int i=0; i<LIST_SIZE; i++) {
+            Task task = LIST.get(i);
+            SB.append(task.toTaskListString());
+            SB.append("\n");
+        }
 
+        String content = SB.toString();
+
+        try {
+            Files.writeString(taskFile, content, StandardOpenOption.CREATE, StandardOpenOption.TRUNCATE_EXISTING);
+        } catch (IOException e) {
+            System.err.println("Error writing string to file: " + e.getMessage());
+            e.printStackTrace();
+        }
     }
 
     private static void bye() {
@@ -131,25 +153,63 @@ public class Pecky {
                 return 0;
             case "mark":
                 mark(s);
+                writeTaskFile();
                 return 0;
             case "unmark":
                 unmark(s);
+                writeTaskFile();
                 return 0;
             case "todo":
                 todo(s);
+                writeTaskFile();
                 return 0;
             case "deadline":
                 deadline(s);
+                writeTaskFile();
                 return 0;
             case "event":
                 event(s);
+                writeTaskFile();
                 return 0;
             case "delete":
                 delete(s);
+                writeTaskFile();
                 return 0;
             default:
                 unknownCommand();
                 return 0;
+        }
+    }
+
+    private static void loadTaskFile() {
+        try (Stream<String> lines = Files.lines(taskFile)) {
+            lines.forEach(line -> {
+                if (line.isEmpty()) {
+                    System.out.println("Empty line in task file!");
+                    return;
+                }
+                String[] args = line.split("\\|");
+                Task newTask;
+                if (args[0].equals("T")) {
+                    newTask = new Todo(args[2]);
+                } else if (args[0].equals("D")) {
+                    newTask = new Deadline(args[2], args[3]);
+                } else if (args[0].equals("E")) {
+                    newTask = new Event(args[2], args[3], args[4]);
+                } else {
+                    System.out.println("Unexpected line in task file: " + line);
+                    return;
+                }
+
+                if (args[1].equals("1")) {
+                    newTask.markDone();
+                }
+
+                addTaskSilent(newTask);
+            });
+        } catch (IOException e) {
+            System.err.println("Error reading file: " + e.getMessage());
+            e.printStackTrace();
         }
     }
 
@@ -167,11 +227,13 @@ public class Pecky {
         } catch (IOException e) {
             System.err.println("An I/O error occurred: " + e.getMessage());
         }
+
+        loadTaskFile();
     }
 
     public static void main(String[] args) {
         initialize();
-        
+
         printOutput(HELLO);
 
         while (command(takeInput()) == 0);
