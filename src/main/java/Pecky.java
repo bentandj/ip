@@ -11,10 +11,7 @@ import java.util.stream.Stream;
 
 public class Pecky {
 
-    private static String HELLO = "Hello! I'm Pecky!\n" +
-            "What can I do for you?";
 
-    private static String BYE = "Bye. Hope to see you again soon!";
 
     private static ArrayList<Task> TASK_LIST = new ArrayList<Task>(100);
     private static int TASK_LIST_SIZE = 0;
@@ -23,19 +20,6 @@ public class Pecky {
     private static Path taskFileFolder = Paths.get("./data");
     private static Path taskFile = Paths.get("./data/pecky.txt");
 
-    private static void printOutput(String s) {
-        System.out.println("____________________________________________________________");
-        System.out.println(s);
-        System.out.println("____________________________________________________________");
-    }
-
-    private static String takeInput() {
-        Scanner scanner = new Scanner(System.in);
-        return scanner.nextLine();
-    }
-
-
-
     private static void addTaskSilent(Task t) {
         TASK_LIST.add(t);
         TASK_LIST_SIZE += 1;
@@ -43,7 +27,7 @@ public class Pecky {
 
     private static void addTask(Task t) {
         addTaskSilent(t);
-        printOutput("Got it. I've added this task: \n  " + t + "\nNow you have " + TASK_LIST_SIZE + " tasks in the list.");
+        Ui.print("Got it. I've added this task: \n  " + t + "\nNow you have " + TASK_LIST_SIZE + " tasks in the list.");
     }
 
     private static void writeTaskFile() {
@@ -63,10 +47,6 @@ public class Pecky {
         }
     }
 
-    private static void bye() {
-        printOutput(BYE);
-    }
-
     private static void list() {
         SB = new StringBuilder();
         SB.append("Here are the tasks in your list:\n");
@@ -77,7 +57,7 @@ public class Pecky {
             SB.append(TASK_LIST.get(i).toString());
         }
 
-        printOutput(SB.toString());
+        Ui.print(SB.toString());
     }
 
     private static void mark(String s) {
@@ -85,11 +65,11 @@ public class Pecky {
         try {
             index = Integer.parseInt(s.substring(5));
         } catch (NumberFormatException e) {
-            System.out.println("Must be integer! " + e.getMessage());
+            Ui.print("Must be integer! " + e.getMessage());
             return;
         }
         TASK_LIST.get(index-1).markDone();
-        printOutput("Nice! I've marked this task as done:\n  " + TASK_LIST.get(index-1).toString());
+        Ui.print("Nice! I've marked this task as done:\n  " + TASK_LIST.get(index-1).toString());
     }
 
     private static void unmark(String s) {
@@ -97,17 +77,17 @@ public class Pecky {
         try {
             index = Integer.parseInt(s.substring(7));
         } catch (NumberFormatException e) {
-            System.out.println("Must be integer! " + e.getMessage());
+            Ui.print("Must be integer! " + e.getMessage());
             return;
         }
         TASK_LIST.get(index-1).markNotDone();
-        printOutput("OK, I've marked this task as not done yet:\n  " + TASK_LIST.get(index-1).toString());
+        Ui.print("OK, I've marked this task as not done yet:\n  " + TASK_LIST.get(index-1).toString());
     }
 
     private static void todo(String s) {
         String[] args = s.split(" ");
         if (args.length == 1) {
-            printOutput("OOPS!!! The description of a todo cannot be empty.");
+            Ui.print("OOPS!!! The description of a todo cannot be empty.");
             return;
         }
         String description = s.substring(5);
@@ -137,20 +117,20 @@ public class Pecky {
         Task taskRemoved = TASK_LIST.get(index-1);
         TASK_LIST.remove(index-1);
         TASK_LIST_SIZE -= 1;
-        printOutput("     Noted. I've removed this task:\n  " + taskRemoved + "\nNow you have " + TASK_LIST_SIZE + " tasks in the list.");
+        Ui.print("     Noted. I've removed this task:\n  " + taskRemoved + "\nNow you have " + TASK_LIST_SIZE + " tasks in the list.");
     }
 
     private static void tasksOnDate(String s) {
         String[] args = s.split(" ");
         if (args.length == 1) {
-            printOutput("OOPS!!! You must specify a date.");
+            Ui.print("OOPS!!! You must specify a date.");
             return;
         }
         String dateString = s.substring(5);
 
         LocalDateTime dateTime = Task.convertStringToDate(dateString);
         if (dateTime == null) {
-            System.out.println("Your date format is invalid!");
+            Ui.print("Your date format is invalid!");
             return;
         }
 
@@ -168,11 +148,11 @@ public class Pecky {
             }
         }
 
-        printOutput(SB.toString());
+        Ui.print(SB.toString());
     }
 
     private static void unknownCommand() {
-        printOutput("OOPS!!! I'm sorry, but I don't know what that means :-(");
+        Ui.print("OOPS!!! I'm sorry, but I don't know what that means :-(");
     }
 
     private static int command(String s) {
@@ -180,7 +160,7 @@ public class Pecky {
 
         switch (args[0]) {
             case "bye":
-                bye();
+                Ui.bye();
                 return 1;
             case "list":
                 list();
@@ -222,7 +202,7 @@ public class Pecky {
         try (Stream<String> lines = Files.lines(taskFile)) {
             lines.forEach(line -> {
                 if (line.isEmpty()) {
-                    System.out.println("Empty line in task file!");
+                    Ui.print("Empty line in task file!");
                     return;
                 }
                 String[] args = line.split("\\|");
@@ -234,7 +214,7 @@ public class Pecky {
                 } else if (args[0].equals("E")) {
                     newTask = Event.createEvent(args[2], args[3], args[4]);
                 } else {
-                    System.out.println("Unexpected line in task file: " + line);
+                    Ui.print("Unexpected line in task file: " + line);
                     return;
                 }
 
@@ -271,8 +251,8 @@ public class Pecky {
     public static void main(String[] args) {
         initialize();
 
-        printOutput(HELLO);
+        Ui.hello();
 
-        while (command(takeInput()) == 0);
+        while (command(Ui.getInput()) == 0);
     }
 }
