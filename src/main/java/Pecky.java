@@ -1,8 +1,6 @@
 import java.io.IOException;
 import java.nio.file.FileAlreadyExistsException;
-import java.time.LocalDate;
 import java.time.LocalDateTime;
-import java.time.format.DateTimeParseException;
 import java.util.ArrayList;
 import java.util.Scanner;
 import java.nio.file.Files;
@@ -10,7 +8,6 @@ import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.nio.file.StandardOpenOption;
 import java.util.stream.Stream;
-import java.time.format.DateTimeFormatter;
 
 public class Pecky {
 
@@ -19,14 +16,12 @@ public class Pecky {
 
     private static String BYE = "Bye. Hope to see you again soon!";
 
-    private static ArrayList<Task> LIST = new ArrayList<Task>(100);
-    private static int LIST_SIZE = 0;
-    private static StringBuilder LIST_STRING = new StringBuilder();
+    private static ArrayList<Task> TASK_LIST = new ArrayList<Task>(100);
+    private static int TASK_LIST_SIZE = 0;
     private static StringBuilder SB = new StringBuilder();
 
     private static Path taskFileFolder = Paths.get("./data");
     private static Path taskFile = Paths.get("./data/pecky.txt");
-    // private static Path taskFile = Paths.get("./data/pecky.txt");
 
     private static void printOutput(String s) {
         System.out.println("____________________________________________________________");
@@ -39,51 +34,22 @@ public class Pecky {
         return scanner.nextLine();
     }
 
-    private static LocalDateTime convertStringToDate(String dateString) {
-        String[] possibleFormatsDateTime = {"yyyy-M-d HHmm", "yyyy/M/d HHmm",
-                "d-M-yyyy HHmm", "d/M/yyyy HHmm"};
 
-        for (int i=0; i<possibleFormatsDateTime.length; i++) {
-            DateTimeFormatter dateTimeFormatter = DateTimeFormatter.ofPattern(possibleFormatsDateTime[i]);
-
-            try {
-                return LocalDateTime.parse(dateString, dateTimeFormatter);
-            } catch (DateTimeParseException e) {
-
-            }
-        }
-
-        String[] possibleFormatsDate = {"d/M/yyyy", "d-M-yyyy", "yyyy/M/d", "yyyy-M-d"};
-
-        for (int i=0; i<possibleFormatsDate.length; i++) {
-            DateTimeFormatter dateTimeFormatter = DateTimeFormatter.ofPattern(possibleFormatsDate[i]);
-
-            try {
-                LocalDate localDate =  LocalDate.parse(dateString, dateTimeFormatter);
-                return localDate.atStartOfDay();
-            } catch (DateTimeParseException e) {
-
-            }
-        }
-
-        System.err.println("Error parsing date and time: " + dateString);
-        return null;
-    }
 
     private static void addTaskSilent(Task t) {
-        LIST.add(t);
-        LIST_SIZE += 1;
+        TASK_LIST.add(t);
+        TASK_LIST_SIZE += 1;
     }
 
     private static void addTask(Task t) {
         addTaskSilent(t);
-        printOutput("Got it. I've added this task: \n  " + t + "\nNow you have " + LIST_SIZE + " tasks in the list.");
+        printOutput("Got it. I've added this task: \n  " + t + "\nNow you have " + TASK_LIST_SIZE + " tasks in the list.");
     }
 
     private static void writeTaskFile() {
         SB = new StringBuilder();
-        for (int i=0; i<LIST_SIZE; i++) {
-            Task task = LIST.get(i);
+        for (int i = 0; i< TASK_LIST_SIZE; i++) {
+            Task task = TASK_LIST.get(i);
             SB.append(task.toTaskListString());
             SB.append("\n");
         }
@@ -102,25 +68,16 @@ public class Pecky {
     }
 
     private static void list() {
-        if (LIST_SIZE == 0) {
-            printOutput("");
-            return;
+        SB = new StringBuilder();
+        SB.append("Here are the tasks in your list:\n");
+        for (int i = 0; i< TASK_LIST_SIZE; i++) {
+            SB.append("\n");
+            SB.append(i+1);
+            SB.append(". ");
+            SB.append(TASK_LIST.get(i).toString());
         }
 
-        LIST_STRING = new StringBuilder();
-        LIST_STRING.append("Here are the tasks in your list:\n");
-        for (int i=0; i<LIST_SIZE-1; i++) {
-            LIST_STRING.append(i+1);
-            LIST_STRING.append(". ");
-            LIST_STRING.append(LIST.get(i).toString());
-            LIST_STRING.append("\n");
-        }
-
-        LIST_STRING.append(LIST_SIZE);
-        LIST_STRING.append(". ");
-        LIST_STRING.append(LIST.get(LIST_SIZE-1).toString());
-
-        printOutput(LIST_STRING.toString());
+        printOutput(SB.toString());
     }
 
     private static void mark(String s) {
@@ -131,8 +88,8 @@ public class Pecky {
             System.out.println("Must be integer! " + e.getMessage());
             return;
         }
-        LIST.get(index-1).markDone();
-        printOutput("Nice! I've marked this task as done:\n  " + LIST.get(index-1).toString());
+        TASK_LIST.get(index-1).markDone();
+        printOutput("Nice! I've marked this task as done:\n  " + TASK_LIST.get(index-1).toString());
     }
 
     private static void unmark(String s) {
@@ -143,8 +100,8 @@ public class Pecky {
             System.out.println("Must be integer! " + e.getMessage());
             return;
         }
-        LIST.get(index-1).markNotDone();
-        printOutput("OK, I've marked this task as not done yet:\n  " + LIST.get(index-1).toString());
+        TASK_LIST.get(index-1).markNotDone();
+        printOutput("OK, I've marked this task as not done yet:\n  " + TASK_LIST.get(index-1).toString());
     }
 
     private static void todo(String s) {
@@ -162,11 +119,7 @@ public class Pecky {
         String[] parts = s.split(" /by ");
         String description = parts[0].trim();
         String by = parts[1].trim();
-        LocalDateTime byDate = convertStringToDate(by);
-        if (byDate == null) {
-            return;
-        }
-        addTask(new Deadline(description, byDate));
+        addTask(Deadline.createDeadline(description, by));
     }
 
     private static void event(String s) {
@@ -176,23 +129,46 @@ public class Pecky {
         String[] timeParts = parts[1].split(" /to ");
         String from = timeParts[0];
         String to = timeParts[1];
-        LocalDateTime fromDate = convertStringToDate(from);
-        if (fromDate == null) {
-            return;
-        }
-        LocalDateTime toDate = convertStringToDate(to);
-        if (toDate == null) {
-            return;
-        }
-        addTask(new Event(description, fromDate, toDate));
+        addTask(Event.createEvent(description, from, to));
     }
 
     private static void delete(String s) {
         int index = Integer.parseInt(s.substring(7));
-        Task taskRemoved = LIST.get(index-1);
-        LIST.remove(index-1);
-        LIST_SIZE -= 1;
-        printOutput("     Noted. I've removed this task:\n  " + taskRemoved + "\nNow you have " + LIST_SIZE + " tasks in the list.");
+        Task taskRemoved = TASK_LIST.get(index-1);
+        TASK_LIST.remove(index-1);
+        TASK_LIST_SIZE -= 1;
+        printOutput("     Noted. I've removed this task:\n  " + taskRemoved + "\nNow you have " + TASK_LIST_SIZE + " tasks in the list.");
+    }
+
+    private static void tasksOnDate(String s) {
+        String[] args = s.split(" ");
+        if (args.length == 1) {
+            printOutput("OOPS!!! You must specify a date.");
+            return;
+        }
+        String dateString = s.substring(5);
+
+        LocalDateTime dateTime = Task.convertStringToDate(dateString);
+        if (dateTime == null) {
+            System.out.println("Your date format is invalid!");
+            return;
+        }
+
+        SB = new StringBuilder();
+        SB.append("Here are the tasks on ");
+        SB.append(dateTime.format(Task.TO_STRING_FORMATTER));
+        SB.append(" :\n");
+
+        for (int i = 0; i< TASK_LIST.size(); i++) {
+            if (TASK_LIST.get(i).onDay(dateTime)) {
+                SB.append("\n");
+                SB.append(i+1);
+                SB.append(". ");
+                SB.append(TASK_LIST.get(i).toString());
+            }
+        }
+
+        printOutput(SB.toString());
     }
 
     private static void unknownCommand() {
@@ -233,6 +209,9 @@ public class Pecky {
                 delete(s);
                 writeTaskFile();
                 return 0;
+            case "date":
+                tasksOnDate(s);
+                return 0;
             default:
                 unknownCommand();
                 return 0;
@@ -251,21 +230,9 @@ public class Pecky {
                 if (args[0].equals("T")) {
                     newTask = new Todo(args[2]);
                 } else if (args[0].equals("D")) {
-                    LocalDateTime byDate = convertStringToDate(args[3]);
-                    if (byDate == null) {
-                        return;
-                    }
-                    newTask = new Deadline(args[2], byDate);
+                    newTask = Deadline.createDeadline(args[2], args[3]);
                 } else if (args[0].equals("E")) {
-                    LocalDateTime fromDate = convertStringToDate(args[3]);
-                    if (fromDate == null) {
-                        return;
-                    }
-                    LocalDateTime toDate = convertStringToDate(args[4]);
-                    if (toDate == null) {
-                        return;
-                    }
-                    newTask = new Event(args[2], fromDate, toDate);
+                    newTask = Event.createEvent(args[2], args[3], args[4]);
                 } else {
                     System.out.println("Unexpected line in task file: " + line);
                     return;
