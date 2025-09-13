@@ -3,18 +3,10 @@ import java.time.LocalDateTime;
 public class Pecky {
 
     private static StringBuilder SB = new StringBuilder();
+    private static TaskList taskList;
 
     protected static void list() {
-        SB = new StringBuilder();
-        SB.append("Here are the tasks in your list:\n");
-        for (int i = 0; i < TaskList.size(); i++) {
-            SB.append("\n");
-            SB.append(i+1);
-            SB.append(". ");
-            SB.append(TaskList.get(i).toString());
-        }
-
-        Ui.print(SB.toString());
+        Ui.print("Here are the tasks in your list:\n\n" + taskList);
     }
 
     protected static void mark(int index) {
@@ -45,16 +37,15 @@ public class Pecky {
         SB = new StringBuilder();
         SB.append("Here are the tasks on ");
         SB.append(dateTime.format(Task.TO_STRING_FORMATTER));
-        SB.append(" :\n");
+        SB.append(" :\n\n");
 
-        for (int i = 0; i < TaskList.size(); i++) {
-            if (TaskList.get(i).onDay(dateTime)) {
-                SB.append("\n");
-                SB.append(i+1);
-                SB.append(". ");
-                SB.append(TaskList.get(i).toString());
+        TaskList tasksOnDate = new TaskList();
+        for (int i = 0; i < taskList.size(); i++) {
+            if (taskList.get(i).onDay(dateTime)) {
+                tasksOnDate.add(taskList.get(i));
             }
         }
+        SB.append(tasksOnDate);
 
         Ui.print(SB.toString());
     }
@@ -70,6 +61,7 @@ public class Pecky {
 
     public static void main(String[] args) {
         Storage.initialize();
+        taskList = Storage.getTaskList();
         Ui.hello();
         while (Parser.parse(Ui.getInput()) == 0);
     }

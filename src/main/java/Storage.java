@@ -3,42 +3,48 @@ import java.nio.file.*;
 import java.util.stream.Stream;
 
 public class Storage {
-    private static Path taskFileFolder = Paths.get("./data");
-    private static Path taskFile = Paths.get("./data/pecky.txt");
+    private static final Path taskFileFolder = Paths.get("./data");
+    private static final Path taskFile = Paths.get("./data/pecky.txt");
+    private static TaskList taskList;
+
+    public static TaskList getTaskList() {
+        return Storage.taskList;
+    }
 
     public static void remove(int i) {
-        Task taskRemoved = TaskList.remove(i-1);
+        Task taskRemoved = taskList.remove(i-1);
         if (taskRemoved == null) {
             Ui.print("Removal of task unsuccessful. Check whether you input a valid number.");
             return;
         }
         writeTaskFile();
-        Ui.print("Noted. I've removed this task:\n  " + taskRemoved + "\nNow you have " + TaskList.size() + " tasks in the list.");
+        Ui.print("Noted. I've removed this task:\n  " + taskRemoved + "\nNow you have " + taskList.size() + " tasks in the list.");
     }
 
     private static void addTaskSilent(Task t) {
-        TaskList.add(t);
+        taskList.add(t);
         writeTaskFile();
     }
 
     public static void addTask(Task t) {
         addTaskSilent(t);
-        Ui.print("Got it. I've added this task: \n  " + t + "\nNow you have " + TaskList.size() + " tasks in the list.");
+        Ui.print("Got it. I've added this task: \n  " + t + "\nNow you have " + taskList.size() + " tasks in the list.");
     }
 
     public static void mark(int i) {
-        TaskList.mark(i-1);
+        taskList.mark(i-1);
         writeTaskFile();
-        Ui.print("Nice! I've marked this task as done:\n  " + TaskList.get(i-1).toString());
+        Ui.print("Nice! I've marked this task as done:\n  " + taskList.get(i-1).toString());
     }
 
     public static void unmark(int i) {
-        TaskList.unmark(i-1);
+        taskList.unmark(i-1);
         writeTaskFile();
-        Ui.print("OK, I've marked this task as not done yet:\n  " + TaskList.get(i-1).toString());
+        Ui.print("OK, I've marked this task as not done yet:\n  " + taskList.get(i-1).toString());
     }
 
     private static void loadTaskFile() {
+        taskList = new TaskList();
         try (Stream<String> lines = Files.lines(taskFile)) {
             lines.forEach(line -> {
                 if (line.isEmpty()) {
@@ -89,14 +95,7 @@ public class Storage {
     }
 
     private static void writeTaskFile() {
-        StringBuilder SB = new StringBuilder();
-        for (int i = 0; i< TaskList.size(); i++) {
-            Task task = TaskList.get(i);
-            SB.append(task.toTaskListString());
-            SB.append("\n");
-        }
-
-        String content = SB.toString();
+        String content = taskList.toTaskListString();
 
         try {
             Files.writeString(taskFile, content, StandardOpenOption.CREATE, StandardOpenOption.TRUNCATE_EXISTING);

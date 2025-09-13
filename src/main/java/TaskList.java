@@ -1,43 +1,73 @@
 import java.util.ArrayList;
 
 public class TaskList {
-    private static final ArrayList<Task> TASK_LIST = new ArrayList<Task>(10);
+    private final ArrayList<Task> taskArrayList;
+    private static final int DEFAULT_CAPACITY = 10;
 
-    public static void add(Task task) {
-        TASK_LIST.add(task);
+    public TaskList() {
+        taskArrayList = new ArrayList<Task>(DEFAULT_CAPACITY);
     }
 
-    public static Task remove(int i) {
+    public void add(Task task) {
+        taskArrayList.add(task);
+    }
+
+    public Task remove(int i) {
         if (i < 0 || i >= size()) {
             return null;
         }
-        Task taskRemoved = TASK_LIST.get(i);
-        TASK_LIST.remove(i);
+        Task taskRemoved = taskArrayList.get(i);
+        taskArrayList.remove(i);
         return taskRemoved;
     }
 
-    public static int size() {
-        return TASK_LIST.size();
+    public int size() {
+        return taskArrayList.size();
     }
 
-    public static Task get(int i) {
+    public Task get(int i) {
         if (i < 0 || i >= size()) {
             return null;
         }
-        return TASK_LIST.get(i);
+        return taskArrayList.get(i);
     }
 
-    public static void mark(int i) {
+    public void mark(int i) {
         if (i < 0 || i >= size()) {
             return;
         }
-        TASK_LIST.get(i).markDone();
+        taskArrayList.get(i).markDone();
     }
 
-    public static void unmark(int i) {
+    public void unmark(int i) {
         if (i < 0 || i >= size()) {
             return;
         }
-        TASK_LIST.get(i).markNotDone();
+        taskArrayList.get(i).markNotDone();
+    }
+
+    @Override
+    public String toString() {
+        StringBuilder SB = new StringBuilder();
+        for (int i = 0; i < size() - 1; i++) {
+            SB.append(i+1);
+            SB.append(". ");
+            SB.append(taskArrayList.get(i));
+            SB.append("\n");
+        }
+        SB.append(size());
+        SB.append(". ");
+        SB.append(taskArrayList.get(size() - 1));
+        return SB.toString();
+    }
+
+    public String toTaskListString() {
+        StringBuilder SB = new StringBuilder();
+        for (int i = 0; i < taskArrayList.size(); i++) {
+            Task task = taskArrayList.get(i);
+            SB.append(task.toTaskListString());
+            SB.append("\n");
+        }
+        return SB.toString();
     }
 }
