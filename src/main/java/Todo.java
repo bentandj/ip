@@ -1,3 +1,5 @@
+import java.time.LocalDateTime;
+
 public class Todo extends Task {
 
     public Todo(String description) {
@@ -12,5 +14,10 @@ public class Todo extends Task {
     @Override
     public String toTaskListString() {
         return "T|" + (this.isDone ? 1 : 0) + "|" + this.description;
+    }
+
+    @Override
+    public boolean onDay(LocalDateTime dateTime) {
+        return false;
     }
 }
