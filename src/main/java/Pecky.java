@@ -1,5 +1,7 @@
 import java.io.IOException;
 import java.nio.file.FileAlreadyExistsException;
+import java.time.LocalDateTime;
+import java.time.format.DateTimeParseException;
 import java.util.ArrayList;
 import java.util.Scanner;
 import java.nio.file.Files;
@@ -7,6 +9,7 @@ import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.nio.file.StandardOpenOption;
 import java.util.stream.Stream;
+import java.time.format.DateTimeFormatter;
 
 public class Pecky {
 
@@ -35,6 +38,24 @@ public class Pecky {
         return scanner.nextLine();
     }
 
+    private static LocalDateTime convertStringToDate(String dateString) {
+        String[] possibleFormats = {"yyyy-M-d HHmm", "yyyy/M/d HHmm",
+                "d-M-yyyy HHmm", "d/M/yyyy HHmm"};
+
+        for (int i=0; i<possibleFormats.length; i++) {
+            DateTimeFormatter dateTimeFormatter = DateTimeFormatter.ofPattern(possibleFormats[i]);
+
+            try {
+                return LocalDateTime.parse(dateString, dateTimeFormatter);
+            } catch (DateTimeParseException e) {
+
+            }
+        }
+
+        System.err.println("Error parsing date and time: " + dateString);
+        return null;
+    }
+
     private static void addTaskSilent(Task t) {
         LIST.add(t);
         LIST_SIZE += 1;
@@ -59,7 +80,6 @@ public class Pecky {
             Files.writeString(taskFile, content, StandardOpenOption.CREATE, StandardOpenOption.TRUNCATE_EXISTING);
         } catch (IOException e) {
             System.err.println("Error writing string to file: " + e.getMessage());
-            e.printStackTrace();
         }
     }
 
@@ -90,13 +110,25 @@ public class Pecky {
     }
 
     private static void mark(String s) {
-        int index = Integer.parseInt(s.substring(5));
+        int index;
+        try {
+            index = Integer.parseInt(s.substring(5));
+        } catch (NumberFormatException e) {
+            System.out.println("Must be integer! " + e.getMessage());
+            return;
+        }
         LIST.get(index-1).markDone();
         printOutput("Nice! I've marked this task as done:\n  " + LIST.get(index-1).toString());
     }
 
     private static void unmark(String s) {
-        int index = Integer.parseInt(s.substring(7));
+        int index;
+        try {
+            index = Integer.parseInt(s.substring(7));
+        } catch (NumberFormatException e) {
+            System.out.println("Must be integer! " + e.getMessage());
+            return;
+        }
         LIST.get(index-1).markNotDone();
         printOutput("OK, I've marked this task as not done yet:\n  " + LIST.get(index-1).toString());
     }
@@ -116,7 +148,11 @@ public class Pecky {
         String[] parts = s.split(" /by ");
         String description = parts[0].trim();
         String by = parts[1].trim();
-        addTask(new Deadline(description, by));
+        LocalDateTime byDate = convertStringToDate(by);
+        if (byDate == null) {
+            return;
+        }
+        addTask(new Deadline(description, byDate));
     }
 
     private static void event(String s) {
@@ -193,7 +229,11 @@ public class Pecky {
                 if (args[0].equals("T")) {
                     newTask = new Todo(args[2]);
                 } else if (args[0].equals("D")) {
-                    newTask = new Deadline(args[2], args[3]);
+                    LocalDateTime byDate = convertStringToDate(args[3]);
+                    if (byDate == null) {
+                        return;
+                    }
+                    newTask = new Deadline(args[2], byDate);
                 } else if (args[0].equals("E")) {
                     newTask = new Event(args[2], args[3], args[4]);
                 } else {
