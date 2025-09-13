@@ -1,5 +1,6 @@
 import java.io.IOException;
 import java.nio.file.FileAlreadyExistsException;
+import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.time.format.DateTimeParseException;
 import java.util.ArrayList;
@@ -39,14 +40,27 @@ public class Pecky {
     }
 
     private static LocalDateTime convertStringToDate(String dateString) {
-        String[] possibleFormats = {"yyyy-M-d HHmm", "yyyy/M/d HHmm",
+        String[] possibleFormatsDateTime = {"yyyy-M-d HHmm", "yyyy/M/d HHmm",
                 "d-M-yyyy HHmm", "d/M/yyyy HHmm"};
 
-        for (int i=0; i<possibleFormats.length; i++) {
-            DateTimeFormatter dateTimeFormatter = DateTimeFormatter.ofPattern(possibleFormats[i]);
+        for (int i=0; i<possibleFormatsDateTime.length; i++) {
+            DateTimeFormatter dateTimeFormatter = DateTimeFormatter.ofPattern(possibleFormatsDateTime[i]);
 
             try {
                 return LocalDateTime.parse(dateString, dateTimeFormatter);
+            } catch (DateTimeParseException e) {
+
+            }
+        }
+
+        String[] possibleFormatsDate = {"d/M/yyyy", "d-M-yyyy", "yyyy/M/d", "yyyy-M-d"};
+
+        for (int i=0; i<possibleFormatsDate.length; i++) {
+            DateTimeFormatter dateTimeFormatter = DateTimeFormatter.ofPattern(possibleFormatsDate[i]);
+
+            try {
+                LocalDate localDate =  LocalDate.parse(dateString, dateTimeFormatter);
+                return localDate.atStartOfDay();
             } catch (DateTimeParseException e) {
 
             }
