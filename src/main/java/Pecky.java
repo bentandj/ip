@@ -4,7 +4,7 @@ public class Pecky {
 
     private static StringBuilder SB = new StringBuilder();
 
-    private static void list() {
+    protected static void list() {
         SB = new StringBuilder();
         SB.append("Here are the tasks in your list:\n");
         for (int i = 0; i < Storage.num(); i++) {
@@ -17,75 +17,31 @@ public class Pecky {
         Ui.print(SB.toString());
     }
 
-    private static void mark(String s) {
-        int index;
-        try {
-            index = Integer.parseInt(s.substring(5));
-        } catch (NumberFormatException e) {
-            Ui.print("Must be integer! " + e.getMessage());
-            return;
-        }
+    protected static void mark(int index) {
         Storage.mark(index);
     }
 
-    private static void unmark(String s) {
-        int index;
-        try {
-            index = Integer.parseInt(s.substring(7));
-        } catch (NumberFormatException e) {
-            Ui.print("Must be integer! " + e.getMessage());
-            return;
-        }
+    protected static void unmark(int index) {
         Storage.unmark(index);
     }
 
-    private static void todo(String s) {
-        String[] args = s.split(" ");
-        if (args.length == 1) {
-            Ui.print("OOPS!!! The description of a todo cannot be empty.");
-            return;
-        }
-        String description = s.substring(5);
+    protected static void todo(String description) {
         Storage.addTask(new Todo(description));
     }
 
-    private static void deadline(String s) {
-        s = s.substring(9).trim();
-        String[] parts = s.split(" /by ");
-        String description = parts[0].trim();
-        String by = parts[1].trim();
+    protected static void deadline(String description, String by) {
         Storage.addTask(Deadline.createDeadline(description, by));
     }
 
-    private static void event(String s) {
-        s = s.substring(6).trim();
-        String[] parts = s.split(" /from ");
-        String description = parts[0].trim();
-        String[] timeParts = parts[1].split(" /to ");
-        String from = timeParts[0];
-        String to = timeParts[1];
+    protected static void event(String description, String from, String to) {
         Storage.addTask(Event.createEvent(description, from, to));
     }
 
-    private static void delete(String s) {
-        int index = Integer.parseInt(s.substring(7));
+    protected static void delete(int index) {
         Storage.remove(index-1);
     }
 
-    private static void tasksOnDate(String s) {
-        String[] args = s.split(" ");
-        if (args.length == 1) {
-            Ui.print("OOPS!!! You must specify a date.");
-            return;
-        }
-        String dateString = s.substring(5);
-
-        LocalDateTime dateTime = Task.convertStringToDate(dateString);
-        if (dateTime == null) {
-            Ui.print("Your date format is invalid!");
-            return;
-        }
-
+    protected static void tasksOnDate(LocalDateTime dateTime) {
         SB = new StringBuilder();
         SB.append("Here are the tasks on ");
         SB.append(dateTime.format(Task.TO_STRING_FORMATTER));
@@ -103,46 +59,18 @@ public class Pecky {
         Ui.print(SB.toString());
     }
 
-    private static int command(String s) {
-        String[] args = s.split(" ");
+    protected static void bye() {
+        Ui.bye();
+        System.exit(0);
+    }
 
-        switch (args[0]) {
-            case "bye":
-                Ui.bye();
-                return 1;
-            case "list":
-                list();
-                return 0;
-            case "mark":
-                mark(s);
-                return 0;
-            case "unmark":
-                unmark(s);
-                return 0;
-            case "todo":
-                todo(s);
-                return 0;
-            case "deadline":
-                deadline(s);
-                return 0;
-            case "event":
-                event(s);
-                return 0;
-            case "delete":
-                delete(s);
-                return 0;
-            case "date":
-                tasksOnDate(s);
-                return 0;
-            default:
-                Ui.unknown();
-                return 0;
-        }
+    protected static void unknown() {
+        Ui.unknown();
     }
 
     public static void main(String[] args) {
         Storage.initialize();
         Ui.hello();
-        while (command(Ui.getInput()) == 0);
+        while (Parser.parse(Ui.getInput()) == 0);
     }
 }
