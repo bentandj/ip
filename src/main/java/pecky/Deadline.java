@@ -4,7 +4,7 @@ import java.time.LocalDateTime;
 
 /**
  * Represents a deadline. A <code>Deadline</code> object has a description
- * and a date e.g., <code>Chemistry homework, 3rd August 2025 2359.</code>
+ * and a date e.g., <code>Chemistry homework, 3rd August 2025 2359</code>.
  */
 
 public class Deadline extends Task {
