@@ -23,7 +23,7 @@ public class MainWindow extends AnchorPane {
     private Pecky pecky;
 
     private Image userImage = new Image(this.getClass().getResourceAsStream("/images/DaUser.png"));
-    private Image dukeImage = new Image(this.getClass().getResourceAsStream("/images/DaDuke.png"));
+    private Image peckyImage = new Image(this.getClass().getResourceAsStream("/images/DaDuke.png"));
 
     @FXML
     public void initialize() {
@@ -52,6 +52,6 @@ public class MainWindow extends AnchorPane {
     }
 
     public void printPeckyInput(String s) {
-        dialogContainer.getChildren().add(DialogBox.getPeckyDialog(s, userImage));
+        dialogContainer.getChildren().add(DialogBox.getPeckyDialog(s, peckyImage));
     }
 }

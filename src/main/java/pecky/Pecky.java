@@ -154,4 +154,10 @@ public class Pecky {
         Ui.hello();
         while (Parser.parse(Ui.getInput()) == 0);
     }
+
+    public static void initialize() {
+        Storage.initialize();
+        taskList = Storage.getTaskList();
+        Ui.hello();
+    }
 }

@@ -40,14 +40,7 @@ public class Ui {
      */
 
     public static void print(String s) {
-        StringBuilder sB = new StringBuilder();
-        sB.append("____________________________________________________________\n");
-        sB.append(s);
-        sB.append("\n____________________________________________________________\n");
-        // System.out.println("____________________________________________________________");
-        // System.out.println(s);
-        // System.out.println("____________________________________________________________");
-        Ui.mainWindow.printPeckyInput(sB.toString());
+        Ui.mainWindow.printPeckyInput(s);
     }
 
     /**
