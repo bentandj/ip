@@ -2,7 +2,22 @@ package pecky;
 
 import java.time.LocalDateTime;
 
+/**
+ * Parses user commands, prints helpful error messages, and redirects
+ * execution to the relevant Pecky functions otherwise.
+ */
+
 public class Parser {
+
+    /**
+     * Parses user commands.
+     * If user input is invalid, helpful error messages are output to the user.
+     * Else, the relevant functions in Pecky are called.
+     * It returns 1 to signal the termination of the program, and 0 otherwise.
+     *
+     * @param s A string representing the user command.
+     * @return The integer 1 if the program should be terminated, and 0 otherwise.
+     */
 
     public static int parse(String s) {
         String[] args = s.split(" ");
