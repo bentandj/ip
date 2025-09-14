@@ -5,6 +5,12 @@ import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
 import java.time.format.DateTimeParseException;
 
+/**
+ * Represents a Task. A <code>Task</code> object has a description
+ * and a boolean indicating whether it is done.
+ * e.g., <code>Chemistry homework, false (not done).</code>
+ */
+
 public abstract class Task {
     protected String description;
     protected boolean isDone;
@@ -12,27 +18,64 @@ public abstract class Task {
     public static DateTimeFormatter TO_STRING_FORMATTER = DateTimeFormatter.ofPattern("MMM-dd-yyyy HH:mm:ss");
     public static DateTimeFormatter TO_TASK_LIST_STRING_FORMATTER = DateTimeFormatter.ofPattern("yyyy-MM-dd HHmm");
 
+    /**
+     * Constructs a new Task object with the specified description.
+     * By default, tasks are not marked as done when initialized.
+     *
+     * @param description Description of the task.
+     */
+
     public Task(String description) {
         this.description = description;
         this.isDone = false;
     }
 
+    /**
+     * Marks the task as done.
+     */
+
     public void markDone() {
         this.isDone = true;
     }
+
+    /**
+     * Marks the task as not done.
+     */
 
     public void markNotDone() {
         this.isDone = false;
     }
 
+    /**
+     * Returns the status of the task, i.e. whether it is done.
+     */
+
     public String getStatusIcon() {
         return (isDone ? "X" : " "); // mark done task with X
     }
+
+    /**
+     * {@inheritDoc}
+     * <p>
+     * This method returns a string representation of the Task object
+     * in the format "[status] description".
+     *
+     * @return String representation of the Task object.
+     */
 
     @Override
     public String toString() {
         return "[" + getStatusIcon() + "] " + description;
     }
+
+    /**
+     * This is a static method to handle the conversion of a date from a String to
+     * a LocalDateTime.
+     * It can handle a few string formats, e.g. yyyy-M-d HHmm or d/M/yyyy.
+     *
+     * @param dateString A String representing the date.
+     * @return A LocalDateTime representing the same date.
+     */
 
     public static LocalDateTime convertStringToDate(String dateString) {
         String[] possibleFormatsDateTime = {"yyyy-M-d HHmm", "yyyy/M/d HHmm",
@@ -65,7 +108,26 @@ public abstract class Task {
         return null;
     }
 
+    /**
+     * This is an abstract method to convert the Task to a String representation that
+     * is easy to read and write to a text file.
+     * This method is to be implemented by the children of the Task class.
+     *
+     * @return A String that can be read and written to a text file.
+     */
+
     public abstract String toTaskListString();
+
+    /**
+     * This is an abstract method to determine whether the task falls on the given date.
+     * This method is to be implemented by the children of the Task class.
+     * By default, if the task does not have any date field, then
+     * it's considered to not fall on any given date.
+     *
+     * @param dateTime A LocalDateTime representing the given date.
+     * @return A boolean that is true if the task falls on the given date,
+     *         and false otherwise.
+     */
 
     public abstract boolean onDay(LocalDateTime dateTime);
 }
