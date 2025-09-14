@@ -22,8 +22,8 @@ public class MainWindow extends AnchorPane {
 
     private Pecky pecky;
 
-    private Image userImage = new Image(this.getClass().getResourceAsStream("/images/DaUser.png"));
-    private Image peckyImage = new Image(this.getClass().getResourceAsStream("/images/DaDuke.png"));
+    private Image userImage = new Image(this.getClass().getResourceAsStream("/images/SeaLion_resized.png"));
+    private Image peckyImage = new Image(this.getClass().getResourceAsStream("/images/Pecky_resized.png"));
 
     @FXML
     public void initialize() {
