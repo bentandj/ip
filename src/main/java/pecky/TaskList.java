@@ -7,8 +7,8 @@ import java.util.ArrayList;
  */
 
 public class TaskList {
-    private final ArrayList<Task> taskArrayList;
     private static final int DEFAULT_CAPACITY = 10;
+    private final ArrayList<Task> taskArrayList;
 
     /**
      * Constructs a new TaskList object with the default capacity.
@@ -111,17 +111,17 @@ public class TaskList {
         if (size() == 0) {
             return "";
         }
-        StringBuilder SB = new StringBuilder();
+        StringBuilder sB = new StringBuilder();
         for (int i = 0; i < size() - 1; i++) {
-            SB.append(i+1);
-            SB.append(". ");
-            SB.append(taskArrayList.get(i));
-            SB.append("\n");
+            sB.append(i + 1);
+            sB.append(". ");
+            sB.append(taskArrayList.get(i));
+            sB.append("\n");
         }
-        SB.append(size());
-        SB.append(". ");
-        SB.append(taskArrayList.get(size() - 1));
-        return SB.toString();
+        sB.append(size());
+        sB.append(". ");
+        sB.append(taskArrayList.get(size() - 1));
+        return sB.toString();
     }
 
     /**
@@ -133,12 +133,12 @@ public class TaskList {
      */
 
     public String toTaskListString() {
-        StringBuilder SB = new StringBuilder();
+        StringBuilder sB = new StringBuilder();
         for (int i = 0; i < taskArrayList.size(); i++) {
             Task task = taskArrayList.get(i);
-            SB.append(task.toTaskListString());
-            SB.append("\n");
+            sB.append(task.toTaskListString());
+            sB.append("\n");
         }
-        return SB.toString();
+        return sB.toString();
     }
 }

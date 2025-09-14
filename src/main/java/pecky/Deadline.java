@@ -77,7 +77,7 @@ public class Deadline extends Task {
 
     @Override
     public boolean onDay(LocalDateTime dateTime) {
-        return dateTime.isEqual(this.by) ||
-                (dateTime.isAfter(this.by.minusDays(1)) && dateTime.isBefore(this.by));
+        return dateTime.isEqual(this.by)
+                || (dateTime.isAfter(this.by.minusDays(1)) && dateTime.isBefore(this.by));
     }
 }

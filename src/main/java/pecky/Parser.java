@@ -23,36 +23,36 @@ public class Parser {
         String[] args = s.split(" ");
 
         switch (args[0]) {
-            case "bye":
-                Parser.bye();
-                return 1;
-            case "list":
-                Parser.list();
-                return 0;
-            case "mark":
-                Parser.mark(s);
-                return 0;
-            case "unmark":
-                Parser.unmark(s);
-                return 0;
-            case "todo":
-                Parser.todo(s, args);
-                return 0;
-            case "deadline":
-                Parser.deadline(s);
-                return 0;
-            case "event":
-                Parser.event(s);
-                return 0;
-            case "delete":
-                Parser.delete(s);
-                return 0;
-            case "date":
-                Parser.date(s, args);
-                return 0;
-            default:
-                Parser.unknown();
-                return 0;
+        case "bye":
+            Parser.bye();
+            return 1;
+        case "list":
+            Parser.list();
+            return 0;
+        case "mark":
+            Parser.mark(s);
+            return 0;
+        case "unmark":
+            Parser.unmark(s);
+            return 0;
+        case "todo":
+            Parser.todo(s, args);
+            return 0;
+        case "deadline":
+            Parser.deadline(s);
+            return 0;
+        case "event":
+            Parser.event(s);
+            return 0;
+        case "delete":
+            Parser.delete(s);
+            return 0;
+        case "date":
+            Parser.date(s, args);
+            return 0;
+        default:
+            Parser.unknown();
+            return 0;
         }
     }
 

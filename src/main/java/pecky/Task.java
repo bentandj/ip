@@ -12,12 +12,11 @@ import java.time.format.DateTimeParseException;
  */
 
 public abstract class Task {
+    public static final DateTimeFormatter TO_STRING_FORMATTER = DateTimeFormatter.ofPattern("MMM-dd-yyyy HH:mm:ss");
+    public static final DateTimeFormatter TO_TASK_LIST_STRING_FORMATTER =
+            DateTimeFormatter.ofPattern("yyyy-MM-dd HHmm");
     protected String description;
     protected boolean isDone;
-
-    public static DateTimeFormatter TO_STRING_FORMATTER = DateTimeFormatter.ofPattern("MMM-dd-yyyy HH:mm:ss");
-    public static DateTimeFormatter TO_TASK_LIST_STRING_FORMATTER = DateTimeFormatter.ofPattern("yyyy-MM-dd HHmm");
-
     /**
      * Constructs a new Task object with the specified description.
      * By default, tasks are not marked as done when initialized.
@@ -78,29 +77,29 @@ public abstract class Task {
      */
 
     public static LocalDateTime convertStringToDate(String dateString) {
-        String[] possibleFormatsDateTime = {"yyyy-M-d HHmm", "yyyy/M/d HHmm",
-                "d-M-yyyy HHmm", "d/M/yyyy HHmm"};
+        String[] possibleFormatsDateTime = {"yyyy-M-d HHmm",
+            "yyyy/M/d HHmm", "d-M-yyyy HHmm", "d/M/yyyy HHmm"};
 
-        for (int i=0; i<possibleFormatsDateTime.length; i++) {
+        for (int i = 0; i < possibleFormatsDateTime.length; i++) {
             DateTimeFormatter dateTimeFormatter = DateTimeFormatter.ofPattern(possibleFormatsDateTime[i]);
 
             try {
                 return LocalDateTime.parse(dateString, dateTimeFormatter);
             } catch (DateTimeParseException e) {
-
+                continue;
             }
         }
 
         String[] possibleFormatsDate = {"d/M/yyyy", "d-M-yyyy", "yyyy/M/d", "yyyy-M-d"};
 
-        for (int i=0; i<possibleFormatsDate.length; i++) {
+        for (int i = 0; i < possibleFormatsDate.length; i++) {
             DateTimeFormatter dateTimeFormatter = DateTimeFormatter.ofPattern(possibleFormatsDate[i]);
 
             try {
-                LocalDate localDate =  LocalDate.parse(dateString, dateTimeFormatter);
+                LocalDate localDate = LocalDate.parse(dateString, dateTimeFormatter);
                 return localDate.atStartOfDay();
             } catch (DateTimeParseException e) {
-
+                continue;
             }
         }
 
