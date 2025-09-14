@@ -78,6 +78,14 @@ public class Parser {
                 }
                 Pecky.tasksOnDate(dateTime);
                 return 0;
+            case "find":
+                if (args.length == 1) {
+                    Ui.print("OOPS!!! You must specify what you're trying to find.");
+                    return 0;
+                }
+                String find = s.substring(5);
+                Pecky.find(find);
+                return 0;
             default:
                 Pecky.unknown();
                 return 0;

@@ -56,6 +56,21 @@ public class Pecky {
         System.exit(0);
     }
 
+    protected static void find(String s) {
+        SB = new StringBuilder();
+        SB.append("Here are the matching tasks in your list:\n\n");
+
+        TaskList matchingTasks = new TaskList();
+        for (int i = 0; i < taskList.size(); i++) {
+            if (taskList.get(i).substringMatch(s)) {
+                matchingTasks.add(taskList.get(i));
+            }
+        }
+        SB.append(matchingTasks);
+
+        Ui.print(SB.toString());
+    }
+
     protected static void unknown() {
         Ui.unknown();
     }

@@ -68,4 +68,8 @@ public abstract class Task {
     public abstract String toTaskListString();
 
     public abstract boolean onDay(LocalDateTime dateTime);
+
+    public boolean substringMatch(String s) {
+        return this.description.toLowerCase().contains(s.toLowerCase());
+    }
 }
