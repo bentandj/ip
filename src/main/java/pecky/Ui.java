@@ -32,11 +32,9 @@ public class Ui {
     }
 
     /**
-     * Takes a String, applies some consistent formatting and outputs
-     * the result to the user.
+     * Takes a String, and outputs the result to the user.
      *
      * @param s A String representing the message to be sent.
-     * @return String
      */
 
     public static void print(String s) {
