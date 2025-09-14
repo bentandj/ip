@@ -4,14 +4,30 @@ import java.io.IOException;
 import java.nio.file.*;
 import java.util.stream.Stream;
 
+/**
+ * Abstracts out the reading and writing of tasks to storage.
+ */
+
 public class Storage {
     private static final Path taskFileFolder = Paths.get("./data");
     private static final Path taskFile = Paths.get("./data/pecky.txt");
     private static TaskList taskList;
 
+    /**
+     * Gets the list of tasks.
+     *
+     * @return A TaskList representing the current list of tasks.
+     */
+
     public static TaskList getTaskList() {
         return Storage.taskList;
     }
+
+    /**
+     * Removes the given task from the task list and updates the text file.
+     *
+     * @param i An integer representing the task to be removed.
+     */
 
     public static void remove(int i) {
         Task taskRemoved = taskList.remove(i-1);
@@ -23,15 +39,36 @@ public class Storage {
         Ui.print("Noted. I've removed this task:\n  " + taskRemoved + "\nNow you have " + taskList.size() + " tasks in the list.");
     }
 
+    /**
+     * Adds the given task to the task list and updates the text file.
+     *
+     * @param t A Task representing the task to be added.
+     */
+
     private static void addTaskSilent(Task t) {
         taskList.add(t);
         writeTaskFile();
     }
 
+    /**
+     * Adds the given task to the task list, updates the text file,
+     * and updates the user through the ui.
+     *
+     * @param t A Task representing the task to be added.
+     */
+
     public static void addTask(Task t) {
         addTaskSilent(t);
         Ui.print("Got it. I've added this task: \n  " + t + "\nNow you have " + taskList.size() + " tasks in the list.");
     }
+
+    /**
+     * Marks the given task as completed, updates the text file,
+     * and updates the user through the ui.
+     *
+     * @param i An integer representing the task to be marked completed.
+     */
+
 
     public static void mark(int i) {
         taskList.mark(i-1);
@@ -39,11 +76,22 @@ public class Storage {
         Ui.print("Nice! I've marked this task as done:\n  " + taskList.get(i-1).toString());
     }
 
+    /**
+     * Marks the given task as not completed, updates the text file,
+     * and updates the user through the ui.
+     *
+     * @param i An integer representing the task to be marked not completed.
+     */
+
     public static void unmark(int i) {
         taskList.unmark(i-1);
         writeTaskFile();
         Ui.print("OK, I've marked this task as not done yet:\n  " + taskList.get(i-1).toString());
     }
+
+    /**
+     * Reads the list of tasks from the text file.
+     */
 
     private static void loadTaskFile() {
         taskList = new TaskList();
@@ -77,6 +125,13 @@ public class Storage {
             e.printStackTrace();
         }
     }
+
+    /**
+     * Initializes the list of tasks from the text file.
+     * If either the text file or its folder is not present,
+     * create the missing file or folder and initialize the empty list of tasks.
+     * Runs everytime the program starts.
+     */
 
     public static void initialize() {
         try {
