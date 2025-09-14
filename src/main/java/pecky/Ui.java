@@ -4,11 +4,11 @@ import java.util.Scanner;
 
 public class Ui {
 
-    private static String HELLO = "Hello! I'm Pecky!\n" +
-            "What can I do for you?";
-    private static String BYE = "Bye. Hope to see you again soon!";
-    private static String UNKNOWN = "OOPS!!! I'm sorry, but I don't know what that means :-(";
-    private static Scanner scanner = new Scanner(System.in);
+    private static final String HELLO = "Hello! I'm Pecky!\n"
+            + "What can I do for you?";
+    private static final String BYE = "Bye. Hope to see you again soon!";
+    private static final String UNKNOWN = "OOPS!!! I'm sorry, but I don't know what that means :-(";
+    private static final Scanner scanner = new Scanner(System.in);
 
     public static String getInput() {
         return scanner.nextLine();

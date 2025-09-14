@@ -3,7 +3,7 @@ import java.time.LocalDateTime;
 
 public class Pecky {
 
-    private static StringBuilder SB = new StringBuilder();
+    private static StringBuilder sB = new StringBuilder();
     private static TaskList taskList;
 
     protected static void list() {
@@ -31,14 +31,14 @@ public class Pecky {
     }
 
     protected static void delete(int index) {
-        Storage.remove(index-1);
+        Storage.remove(index - 1);
     }
 
     protected static void tasksOnDate(LocalDateTime dateTime) {
-        SB = new StringBuilder();
-        SB.append("Here are the tasks on ");
-        SB.append(dateTime.format(Task.TO_STRING_FORMATTER));
-        SB.append(" :\n\n");
+        sB = new StringBuilder();
+        sB.append("Here are the tasks on ");
+        sB.append(dateTime.format(Task.TO_STRING_FORMATTER));
+        sB.append(" :\n\n");
 
         TaskList tasksOnDate = new TaskList();
         for (int i = 0; i < taskList.size(); i++) {
@@ -46,9 +46,9 @@ public class Pecky {
                 tasksOnDate.add(taskList.get(i));
             }
         }
-        SB.append(tasksOnDate);
+        sB.append(tasksOnDate);
 
-        Ui.print(SB.toString());
+        Ui.print(sB.toString());
     }
 
     protected static void bye() {
