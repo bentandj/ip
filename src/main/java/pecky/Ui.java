@@ -9,11 +9,17 @@ import java.util.Scanner;
 
 public class Ui {
 
+    private static MainWindow mainWindow;
+
     private static final String HELLO = "Hello! I'm Pecky!\n"
             + "What can I do for you?";
     private static final String BYE = "Bye. Hope to see you again soon!";
     private static final String UNKNOWN = "OOPS!!! I'm sorry, but I don't know what that means :-(";
     private static final Scanner scanner = new Scanner(System.in);
+
+    public static void setMainWindow(MainWindow mainWindow) {
+        Ui.mainWindow = mainWindow;
+    }
 
     /**
      * Scans for user input.
@@ -30,12 +36,18 @@ public class Ui {
      * the result to the user.
      *
      * @param s A String representing the message to be sent.
+     * @return String
      */
 
     public static void print(String s) {
-        System.out.println("____________________________________________________________");
-        System.out.println(s);
-        System.out.println("____________________________________________________________");
+        StringBuilder sB = new StringBuilder();
+        sB.append("____________________________________________________________\n");
+        sB.append(s);
+        sB.append("\n____________________________________________________________\n");
+        // System.out.println("____________________________________________________________");
+        // System.out.println(s);
+        // System.out.println("____________________________________________________________");
+        Ui.mainWindow.printPeckyInput(sB.toString());
     }
 
     /**
