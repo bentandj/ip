@@ -129,4 +129,16 @@ public abstract class Task {
      */
 
     public abstract boolean onDay(LocalDateTime dateTime);
+
+    /**
+     * Checks whether the string s is contained within the Task's description.
+     *
+     * @param s The string to be checked.
+     * @return A boolean that is true if s is contained within the description,
+     *         and false otherwise.
+     */
+
+    public boolean substringMatch(String s) {
+        return this.description.toLowerCase().contains(s.toLowerCase());
+    }
 }

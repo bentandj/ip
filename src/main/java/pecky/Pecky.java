@@ -116,6 +116,21 @@ public class Pecky {
         System.exit(0);
     }
 
+    protected static void find(String s) {
+        sB = new StringBuilder();
+        sB.append("Here are the matching tasks in your list:\n\n");
+
+        TaskList matchingTasks = new TaskList();
+        for (int i = 0; i < taskList.size(); i++) {
+            if (taskList.get(i).substringMatch(s)) {
+                matchingTasks.add(taskList.get(i));
+            }
+        }
+        sB.append(matchingTasks);
+
+        Ui.print(sB.toString());
+    }
+
     /**
      * Tells the user that the command that was input is unknown.
      */
