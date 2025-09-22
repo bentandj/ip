@@ -1,6 +1,8 @@
 package pecky;
 
 import java.util.ArrayList;
+import java.util.stream.Collectors;
+import java.util.stream.IntStream;
 
 /**
  * Represents a list of Tasks.
@@ -111,17 +113,10 @@ public class TaskList {
         if (size() == 0) {
             return "";
         }
-        StringBuilder sB = new StringBuilder();
-        for (int i = 0; i < size() - 1; i++) {
-            sB.append(i + 1);
-            sB.append(". ");
-            sB.append(taskArrayList.get(i));
-            sB.append("\n");
-        }
-        sB.append(size());
-        sB.append(". ");
-        sB.append(taskArrayList.get(size() - 1));
-        return sB.toString();
+
+        return IntStream.range(0, taskArrayList.size())
+                .mapToObj(i -> (i + 1) + ". " + taskArrayList.get(i))
+                .collect(Collectors.joining("\n"));
     }
 
     /**
@@ -133,12 +128,8 @@ public class TaskList {
      */
 
     public String toTaskListString() {
-        StringBuilder sB = new StringBuilder();
-        for (int i = 0; i < taskArrayList.size(); i++) {
-            Task task = taskArrayList.get(i);
-            sB.append(task.toTaskListString());
-            sB.append("\n");
-        }
-        return sB.toString();
+        return taskArrayList.stream()
+                .map(Task::toTaskListString)
+                .collect(Collectors.joining("\n"));
     }
 }
