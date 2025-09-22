@@ -15,8 +15,11 @@ public abstract class Task {
     public static final DateTimeFormatter TO_STRING_FORMATTER = DateTimeFormatter.ofPattern("MMM-dd-yyyy HH:mm:ss");
     public static final DateTimeFormatter TO_TASK_LIST_STRING_FORMATTER =
             DateTimeFormatter.ofPattern("yyyy-MM-dd HHmm");
+    public static final int DONE = 1;
+    public static final int NOT_DONE = 0;
     protected String description;
     protected boolean isDone;
+
     /**
      * Constructs a new Task object with the specified description.
      * By default, tasks are not marked as done when initialized.

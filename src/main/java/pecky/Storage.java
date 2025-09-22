@@ -41,8 +41,9 @@ public class Storage {
             return;
         }
         writeTaskFile();
-        Ui.print("Noted. I've removed this task:\n  "
-                + taskRemoved + "\nNow you have " + taskList.size() + " tasks in the list.");
+        String line1 = "Noted. I've removed this task:\n  " + taskRemoved;
+        String line2 = "\nNow you have " + taskList.size() + " tasks in the list.";
+        Ui.print(line1 + line2);
     }
 
     /**
@@ -75,8 +76,9 @@ public class Storage {
         }
         assert taskList != null;
         addTaskSilent(t);
-        Ui.print("Got it. I've added this task: \n  "
-                + t + "\nNow you have " + taskList.size() + " tasks in the list.");
+        String line1 = "Got it. I've added this task: \n  " + t;
+        String line2 = "\nNow you have " + taskList.size() + " tasks in the list.";
+        Ui.print(line1 + line2);
     }
 
     /**
@@ -91,7 +93,9 @@ public class Storage {
         assert taskList != null;
         taskList.mark(i - 1);
         writeTaskFile();
-        Ui.print("Nice! I've marked this task as done:\n  " + taskList.get(i - 1).toString());
+        String line1 = "Nice! I've marked this task as done:";
+        String line2 = "\n  " + taskList.get(i - 1).toString();
+        Ui.print(line1 + line2);
     }
 
     /**
@@ -105,7 +109,40 @@ public class Storage {
         assert taskList != null;
         taskList.unmark(i - 1);
         writeTaskFile();
-        Ui.print("OK, I've marked this task as not done yet:\n  " + taskList.get(i - 1).toString());
+        String line1 = "OK, I've marked this task as not done yet:";
+        String line2 = "\n  " + taskList.get(i - 1).toString();
+        Ui.print(line1 + line2);
+    }
+
+    private static void readInTask(String line) {
+        String[] args = line.split("\\|");
+        Task newTask;
+        if (args[0].equals("T")) {
+            newTask = new Todo(args[2]);
+        } else if (args[0].equals("D")) {
+            newTask = Deadline.createDeadline(args[2], args[3]);
+        } else if (args[0].equals("E")) {
+            newTask = Event.createEvent(args[2], args[3], args[4]);
+        } else {
+            Ui.print("Unexpected line in task file: " + line);
+            return;
+        }
+
+        if (args[1].equals("1")) {
+            newTask.markDone();
+        }
+
+        addTaskSilent(newTask);
+    }
+
+    private static void loadLines(Stream<String> lines) {
+        lines.forEach(line -> {
+            if (line.isEmpty()) {
+                Ui.print("Empty line in task file!");
+                return;
+            }
+            readInTask(line);
+        });
     }
 
     /**
@@ -115,30 +152,7 @@ public class Storage {
     private static void loadTaskFile() {
         taskList = new TaskList();
         try (Stream<String> lines = Files.lines(taskFile)) {
-            lines.forEach(line -> {
-                if (line.isEmpty()) {
-                    Ui.print("Empty line in task file!");
-                    return;
-                }
-                String[] args = line.split("\\|");
-                Task newTask;
-                if (args[0].equals("T")) {
-                    newTask = new Todo(args[2]);
-                } else if (args[0].equals("D")) {
-                    newTask = Deadline.createDeadline(args[2], args[3]);
-                } else if (args[0].equals("E")) {
-                    newTask = Event.createEvent(args[2], args[3], args[4]);
-                } else {
-                    Ui.print("Unexpected line in task file: " + line);
-                    return;
-                }
-
-                if (args[1].equals("1")) {
-                    newTask.markDone();
-                }
-
-                addTaskSilent(newTask);
-            });
+            loadLines(lines);
         } catch (IOException e) {
             System.err.println("Error reading file: " + e.getMessage());
             e.printStackTrace();
