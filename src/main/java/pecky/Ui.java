@@ -1,5 +1,9 @@
 package pecky;
 
+import java.io.IOException;
+import java.nio.file.Files;
+import java.nio.file.Path;
+import java.nio.file.Paths;
 import java.util.Scanner;
 
 /**
@@ -15,6 +19,8 @@ public class Ui {
             + "What can I do for you?";
     private static final String BYE = "Bye. Hope to see you again soon!";
     private static final String UNKNOWN = "OOPS!!! I'm sorry, but I don't know what that means :-(";
+    private static final Path commandListFile = Paths.get("./data/commandList.txt");
+
     private static final Scanner scanner = new Scanner(System.in);
 
     public static void setMainWindow(MainWindow mainWindow) {
@@ -64,5 +70,19 @@ public class Ui {
 
     public static void unknown() {
         Ui.print(UNKNOWN);
+    }
+
+    /**
+     * Helps the user by printing the command list if an unknown input
+     * is encountered 3 times.
+     */
+
+    public static void help() {
+        try {
+            Ui.print(Files.readString(commandListFile));
+        } catch (IOException e) {
+            System.err.println("Error reading file: " + e.getMessage());
+            e.printStackTrace();
+        }
     }
 }

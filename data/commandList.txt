@@ -1,0 +1,13 @@
+You have entered 3 unknown commands.
+To help you, please see the list of commands below:
+
+list
+mark [index]
+unmark [index]
+delete [index]
+date [datetime]
+find [task description]
+remind
+todo [description]
+deadline [description] /by [datetime]
+event [description] /from [datetime] to [datetime]

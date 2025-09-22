@@ -13,6 +13,7 @@ public class Pecky {
     private StringBuilder sB = new StringBuilder();
     private TaskList taskList;
     private Storage storage;
+    private int unknownCount;
 
     /**
      * Constructor for Pecky.
@@ -20,6 +21,7 @@ public class Pecky {
     public Pecky() {
         this.storage = new Storage();
         this.taskList = this.storage.getTaskList();
+        this.unknownCount = 0;
         Ui.hello();
     }
 
@@ -146,7 +148,14 @@ public class Pecky {
      */
 
     protected void unknown() {
-        Ui.unknown();
+        unknownCount += 1;
+        if (unknownCount <= 2) {
+            Ui.unknown();
+            return;
+        }
+
+        Ui.help();
+        unknownCount = 0;
     }
 
     /**
