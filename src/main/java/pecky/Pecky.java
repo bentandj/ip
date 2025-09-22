@@ -95,15 +95,7 @@ public class Pecky {
         sB.append("Here are the tasks on ");
         sB.append(dateTime.format(Task.TO_STRING_FORMATTER));
         sB.append(" :\n\n");
-
-        TaskList tasksOnDate = new TaskList();
-        for (int i = 0; i < taskList.size(); i++) {
-            if (taskList.get(i).onDay(dateTime)) {
-                tasksOnDate.add(taskList.get(i));
-            }
-        }
-        sB.append(tasksOnDate);
-
+        sB.append(taskList.getTasksOnDate(dateTime));
         Ui.print(sB.toString());
     }
 

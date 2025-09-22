@@ -1,5 +1,6 @@
 package pecky;
 
+import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.stream.Collectors;
 import java.util.stream.IntStream;
@@ -138,5 +139,14 @@ public class TaskList {
         return taskArrayList.stream()
                 .map(Task::toTaskListString)
                 .collect(Collectors.joining("\n"));
+    }
+
+    public TaskList getTasksOnDate(LocalDateTime dateTime) {
+        TaskList tasksOnDate = new TaskList();
+
+        taskArrayList.stream()
+                .filter(task -> task.onDay(dateTime))
+                .forEach(tasksOnDate::add);
+        return tasksOnDate;
     }
 }
