@@ -126,20 +126,7 @@ public class Pecky {
     protected void remind() {
         sB = new StringBuilder();
         sB.append("Here are the deadlines in the next 7 days in your list:\n\n");
-
-        TaskList upcomingDeadlines = new TaskList();
-        for (int i = 0; i < taskList.size(); i++) {
-            Task task = taskList.get(i);
-            if (!(task instanceof Deadline)) {
-                continue;
-            }
-
-            Deadline deadline = (Deadline) task;
-            if (deadline.upcoming()) {
-                upcomingDeadlines.add(deadline);
-            }
-        }
-        sB.append(upcomingDeadlines);
+        sB.append(taskList.getUpcomingDeadlines());
 
         Ui.print(sB.toString());
     }

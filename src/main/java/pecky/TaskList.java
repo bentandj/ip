@@ -149,4 +149,16 @@ public class TaskList {
                 .forEach(tasksOnDate::add);
         return tasksOnDate;
     }
+
+    public TaskList getUpcomingDeadlines() {
+        TaskList upcomingDeadlines = new TaskList();
+
+        taskArrayList.stream()
+                .filter(task -> task instanceof Deadline)
+                .map(task -> (Deadline) task)
+                .filter(Deadline::upcoming)
+                .forEach(upcomingDeadlines::add);
+
+        return upcomingDeadlines;
+    }
 }
