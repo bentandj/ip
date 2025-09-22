@@ -1,6 +1,11 @@
+D|0|IP Week 1|2025-09-22 2359
+D|0|IP Week 2|2025-09-22 2359
+D|0|IP Week 3|2025-09-22 2359
+D|0|IP Week 4|2025-09-22 2359
+D|0|IP Week 5|2025-09-22 2359
+D|0|IP Week 6|2025-09-22 2359
 T|0|CS2103T IP!! Need to start
 T|1|Need buy rice
-E|0|MATH EXAM|2025-09-29 0800|2025-09-29 1000
 D|1|Chemistry Homework 6|2025-09-19 2359
 D|1|MA1522 Assignment|2025-09-18 2359
 D|0|Return Campbell Biology Textbook|2025-10-02 1800
@@ -12,3 +17,6 @@ E|0|testEvent3|2007-06-05 0000|2009-08-07 0000
 T|0|asdfmiope
 D|0|chemistryAssignment|2025-09-28 2359
 D|0|longTimeLater|2025-12-12 0000
+T|0|Is a monad a monoid in the category of endofunctors
+D|0|Drop module before week 7|2025-09-29 0000
+E|0|RECESS WEEK OMG PLS DONT END|2025-09-20 0000|2025-09-28 2359
