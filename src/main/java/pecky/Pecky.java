@@ -11,7 +11,7 @@ import java.time.LocalDateTime;
 public class Pecky {
 
     private StringBuilder sB = new StringBuilder();
-    private TaskList taskList;
+    private final TaskList taskList;
     private final Storage storage;
     private int unknownCount;
 
