@@ -25,13 +25,11 @@ public class Parser {
     public static int parse(Pecky pecky, String s) {
         String[] args = s.split(" ");
 
-        switch (args[0]) {
-        case "bye":
+        if (args[0].equals("bye")) {
             Parser.bye(pecky);
             return Parser.EXIT;
-        default:
-            return parseTaskListCommands(pecky, s, args);
         }
+        return parseTaskListCommands(pecky, s, args);
     }
 
     /**
