@@ -133,6 +133,7 @@ public class Storage {
         }
 
         if (args[1].equals("1")) {
+            assert newTask != null;
             newTask.markDone();
         }
 
