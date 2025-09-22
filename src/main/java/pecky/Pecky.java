@@ -12,7 +12,7 @@ public class Pecky {
 
     private StringBuilder sB = new StringBuilder();
     private TaskList taskList;
-    private Storage storage;
+    private final Storage storage;
     private int unknownCount;
 
     /**
