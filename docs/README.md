@@ -1,6 +1,6 @@
 # Pecky User Guide
 
-![The Pecky UI.](/docs/Ui.png "The Pecky UI.")
+![The Pecky UI.](Ui.png "The Pecky UI.")
 
 > “Your mind is for having ideas, not holding them.” – David Allen ([source](https://dansilvestre.com/productivity-quotes))
 
@@ -29,7 +29,7 @@ Simply type:
 
 And it will list out as follows:
 
-![The Pecky UI.](/docs/list.png "The Pecky UI.")
+![The Pecky UI.](list.png "The Pecky UI.")
 
 ## Mark and unmark tasks
 
@@ -42,7 +42,7 @@ The commands are as follows:
 
 For example:
 
-![](/docs/markunmark.png)
+![](markunmark.png)
 
 ## Delete tasks
 
@@ -55,7 +55,7 @@ The syntax is:
 
 For example:
 
-![](/docs/delete.png)
+![](delete.png)
 
 ## Find tasks occurring on a certain date
 
@@ -65,7 +65,7 @@ Shiver me timbers! I forgot what's happening tomorrow! Oh wait, just type this:
 
 And here it is!
 
-![](/docs/date.png)
+![](date.png)
 
 ## Find tasks by description
 
@@ -78,7 +78,7 @@ The syntax is
 
 Here's the output:
 
-![](/docs/find.png)
+![](find.png)
 
 ## Remind what are the deadlines in the next 7 days
 
@@ -91,7 +91,7 @@ The syntax is
 
 Let's see what you have:
 
-![](/docs/remind.png)
+![](remind.png)
 
 ## Add todo
 
@@ -104,7 +104,7 @@ The syntax is
 
 Here's an example:
 
-![](/docs/todo.png)
+![](todo.png)
 
 ## Add deadline
 
@@ -116,7 +116,7 @@ The syntax is
 
 This is an example:
 
-![](/docs/deadline.png)
+![](deadline.png)
 
 ## Add event
 
@@ -129,7 +129,7 @@ The syntax is
 
 This is an example:
 
-![](/docs/event.png)
+![](event.png)
 
 ## Pecky remembers you!
 
@@ -139,4 +139,4 @@ You can close the application at any point in time and when you come back, all y
 
 Don't worry, Pecky is smart and can tell you just suffered from a bout of amnesia. After you input 3 commands it doesn't know, Pecky will give you the command list! Here's what it will say!
 
-![](/docs/help.png)
+![](help.png)
