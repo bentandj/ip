@@ -148,29 +148,39 @@ public class Parser {
 
     private static void deadline(Pecky pecky, String s) {
         if (s.length() <= 9) {
-            Ui.print("OOPS!!! The syntax of the command is 'deadline [description] /by [date / datetime]");
+            Ui.print("OOPS!!! The syntax of the command is 'deadline [description] /by [date / datetime]'");
             return;
         }
-        s = s.substring(9).trim();
-        String[] parts = s.split(" /by ");
-        String description = parts[0].trim();
-        String by = parts[1].trim();
-        pecky.deadline(description, by);
+        try {
+            s = s.substring(9).trim();
+            String[] parts = s.split(" /by ");
+            String description = parts[0].trim();
+            String by = parts[1].trim();
+            pecky.deadline(description, by);
+        } catch (Exception e) {
+            Ui.print("OOPS!!! The syntax of the command is 'deadline [description] /by [date / datetime]'");
+        }
     }
 
     private static void event(Pecky pecky, String s) {
         if (s.length() <= 6) {
             Ui.print("OOPS!!! The syntax of the command is "
-                    + "'event [description] /from [date / datetime] /to [date / datetime]");
+                    + "'event [description] /from [date / datetime] /to [date / datetime]'");
             return;
         }
-        s = s.substring(6).trim();
-        String[] parts = s.split(" /from ");
-        String description = parts[0].trim();
-        String[] timeParts = parts[1].split(" /to ");
-        String from = timeParts[0];
-        String to = timeParts[1];
-        pecky.event(description, from, to);
+
+        try {
+            s = s.substring(6).trim();
+            String[] parts = s.split(" /from ");
+            String description = parts[0].trim();
+            String[] timeParts = parts[1].split(" /to ");
+            String from = timeParts[0];
+            String to = timeParts[1];
+            pecky.event(description, from, to);
+        } catch (Exception e) {
+            Ui.print("OOPS!!! The syntax of the command is "
+                    + "'event [description] /from [date / datetime] /to [date / datetime]'");
+        }
     }
 
     private static void delete(Pecky pecky, String s) {
@@ -178,8 +188,13 @@ public class Parser {
             Ui.print("OOPS!!! You must choose a task (input its index as an integer) to delete!");
             return;
         }
-        int index = Integer.parseInt(s.substring(7));
-        pecky.delete(index);
+        try {
+            int index = Integer.parseInt(s.substring(7));
+            pecky.delete(index);
+        } catch (Exception e) {
+            Ui.print("OOPS!!! The syntax of the command is "
+                    + "'delete [integer index]'");
+        }
     }
 
     private static void date(Pecky pecky, String s, String[] args) {
