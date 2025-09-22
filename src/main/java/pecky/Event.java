@@ -35,16 +35,16 @@ public class Event extends Task {
     public static Event createEvent(String description, String from, String to) {
         LocalDateTime fromDate = convertStringToDate(from);
         if (fromDate == null) {
-            System.out.println("/from string pattern is invalid: " + from);
+            Ui.print("/from string pattern is invalid: " + from);
             return null;
         }
         LocalDateTime toDate = convertStringToDate(to);
         if (toDate == null) {
-            System.out.println("/to string pattern is invalid: " + to);
+            Ui.print("/to string pattern is invalid: " + to);
             return null;
         }
         if (fromDate.isAfter(toDate)) {
-            System.out.println("From date must be before the to date.");
+            Ui.print("From date must be before the to date.");
             return null;
         }
         return new Event(description, fromDate, toDate);
@@ -64,7 +64,9 @@ public class Event extends Task {
     public String toString() {
         String formattedFrom = this.from.format(TO_STRING_FORMATTER);
         String formattedTo = this.to.format(TO_STRING_FORMATTER);
-        return "[E]" + super.toString() + " (from: " + formattedFrom + " to: " + formattedTo + ")";
+        String name = "[E]" + super.toString();
+        String duration = "(from: " + formattedFrom + " to: " + formattedTo + ")";
+        return name + " " + duration;
     }
 
     /**
@@ -83,7 +85,10 @@ public class Event extends Task {
         String formattedTo = this.to.format(TO_TASK_LIST_STRING_FORMATTER);
         assert formattedFrom.length() > 1;
         assert formattedTo.length() > 1;
-        return "E|" + (this.isDone ? 1 : 0) + "|" + this.description + "|" + formattedFrom + "|" + formattedTo;
+        int done = this.isDone ? DONE : NOT_DONE;
+        String name = "E|" + done + "|" + this.description;
+        String duration = "|" + formattedFrom + "|" + formattedTo;
+        return name + duration;
     }
 
     /**
@@ -97,6 +102,8 @@ public class Event extends Task {
 
     @Override
     public boolean onDay(LocalDateTime dateTime) {
-        return dateTime.isAfter(this.from.minusDays(1)) && dateTime.isBefore(this.to);
+        boolean eventIsActivated = dateTime.isAfter(this.from.minusDays(1));
+        boolean eventIsNotPassed = dateTime.isBefore(this.to);
+        return eventIsActivated && eventIsNotPassed;
     }
 }

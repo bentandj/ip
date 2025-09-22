@@ -45,7 +45,8 @@ public class Todo extends Task {
 
     @Override
     public String toTaskListString() {
-        return "T|" + (this.isDone ? 1 : 0) + "|" + this.description;
+        int done = this.isDone ? DONE : NOT_DONE;
+        return "T|" + done + "|" + this.description;
     }
 
     /**

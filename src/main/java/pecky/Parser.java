@@ -9,6 +9,9 @@ import java.time.LocalDateTime;
 
 public class Parser {
 
+    public static final int EXIT = 1;
+    public static final int CONTINUE = 0;
+
     /**
      * Parses user commands.
      * If user input is invalid, helpful error messages are output to the user.
@@ -22,45 +25,74 @@ public class Parser {
     public static int parse(String s) {
         String[] args = s.split(" ");
 
-        try {
-            switch (args[0]) {
-            case "bye":
-                Parser.bye();
-                return 1;
-            case "list":
-                Parser.list();
-                return 0;
-            case "mark":
-                Parser.mark(s);
-                return 0;
-            case "unmark":
-                Parser.unmark(s);
-                return 0;
-            case "todo":
-                Parser.todo(s, args);
-                return 0;
-            case "deadline":
-                Parser.deadline(s);
-                return 0;
-            case "event":
-                Parser.event(s);
-                return 0;
-            case "delete":
-                Parser.delete(s);
-                return 0;
-            case "date":
-                Parser.date(s, args);
-                return 0;
-            case "find":
-                Parser.find(s, args);
-                return 0;
-            default:
-                Parser.unknown();
-                return 0;
-            }
-        } catch (Exception e) {
+        switch (args[0]) {
+        case "bye":
+            Parser.bye();
+            return Parser.EXIT;
+        default:
+            return parseTaskListCommands(s, args);
+        }
+    }
+
+    /**
+     * Second step in parsing user commands.
+     * If user input is invalid, helpful error messages are output to the user.
+     * Else, the relevant functions in Pecky are called.
+     * It returns 1 to signal the termination of the program, and 0 otherwise.
+     *
+     * @param s A string representing the user command.
+     * @return The integer 1 if the program should be terminated, and 0 otherwise.
+     */
+
+    public static int parseTaskListCommands(String s, String[] args) {
+        switch (args[0]) {
+        case "list":
+            Parser.list();
+            return Parser.CONTINUE;
+        case "mark":
+            Parser.mark(s);
+            return Parser.CONTINUE;
+        case "unmark":
+            Parser.unmark(s);
+            return Parser.CONTINUE;
+        case "delete":
+            Parser.delete(s);
+            return Parser.CONTINUE;
+        case "date":
+            Parser.date(s, args);
+            return Parser.CONTINUE;
+        case "find":
+            Parser.find(s, args);
+            return Parser.CONTINUE;
+        default:
+            return Parser.parseAddCommands(s, args);
+        }
+    }
+
+    /**
+     * Third step in parsing user commands.
+     * If user input is invalid, helpful error messages are output to the user.
+     * Else, the relevant functions in Pecky are called.
+     * It returns 1 to signal the termination of the program, and 0 otherwise.
+     *
+     * @param s A string representing the user command.
+     * @return The integer 1 if the program should be terminated, and 0 otherwise.
+     */
+
+    public static int parseAddCommands(String s, String[] args) {
+        switch (args[0]) {
+        case "todo":
+            Parser.todo(s, args);
+            return Parser.CONTINUE;
+        case "deadline":
+            Parser.deadline(s);
+            return Parser.CONTINUE;
+        case "event":
+            Parser.event(s);
+            return Parser.CONTINUE;
+        default:
             Parser.unknown();
-            return 0;
+            return Parser.CONTINUE;
         }
     }
 
