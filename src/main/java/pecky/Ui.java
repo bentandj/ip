@@ -81,8 +81,9 @@ public class Ui {
         try {
             Ui.print(Files.readString(commandListFile));
         } catch (IOException e) {
-            System.err.println("Error reading file: " + e.getMessage());
-            e.printStackTrace();
+            Ui.print("You entered 3 incorrect commands."
+                    + "\nUnfortunately I lost my command list T_T"
+                    + "\nCan't help you :(");
         }
     }
 }
