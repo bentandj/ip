@@ -13,7 +13,7 @@ import javafx.stage.Stage;
  */
 public class Main extends Application {
 
-    private Pecky pecky = new Pecky();
+    private Pecky pecky;
 
     @Override
     public void start(Stage stage) {
@@ -24,8 +24,8 @@ public class Main extends Application {
             Ui.setMainWindow(controller);
             Scene scene = new Scene(ap);
             stage.setScene(scene);
-            fxmlLoader.<MainWindow>getController().setPecky(pecky);  // inject the Pecky instance
-            pecky.initialize();
+            pecky = new Pecky();
+            fxmlLoader.<MainWindow>getController().setPecky(pecky); // inject the Pecky instance
             stage.show();
         } catch (IOException e) {
             e.printStackTrace();

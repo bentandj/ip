@@ -12,6 +12,16 @@ public class Pecky {
 
     private StringBuilder sB = new StringBuilder();
     private TaskList taskList;
+    private Storage storage;
+
+    /**
+     * Constructor for Pecky.
+     */
+    public Pecky() {
+        this.storage = new Storage();
+        this.taskList = this.storage.getTaskList();
+        Ui.hello();
+    }
 
     /**
      * Lists out all the tasks to the user.
@@ -28,7 +38,7 @@ public class Pecky {
      */
 
     protected void mark(int index) {
-        Storage.mark(index);
+        storage.mark(index);
     }
 
     /**
@@ -38,7 +48,7 @@ public class Pecky {
      */
 
     protected void unmark(int index) {
-        Storage.unmark(index);
+        storage.unmark(index);
     }
 
     /**
@@ -48,7 +58,7 @@ public class Pecky {
      */
 
     protected void todo(String description) {
-        Storage.addTask(new Todo(description));
+        storage.addTask(new Todo(description));
     }
 
     /**
@@ -59,7 +69,7 @@ public class Pecky {
      */
 
     protected void deadline(String description, String by) {
-        Storage.addTask(Deadline.createDeadline(description, by));
+        storage.addTask(Deadline.createDeadline(description, by));
     }
 
     /**
@@ -71,7 +81,7 @@ public class Pecky {
      */
 
     protected void event(String description, String from, String to) {
-        Storage.addTask(Event.createEvent(description, from, to));
+        storage.addTask(Event.createEvent(description, from, to));
     }
 
     /**
@@ -81,7 +91,7 @@ public class Pecky {
      */
 
     protected void delete(int index) {
-        Storage.remove(index - 1);
+        storage.remove(index - 1);
     }
 
     /**
@@ -150,19 +160,7 @@ public class Pecky {
 
     public static void main(String[] args) {
         Pecky pecky = new Pecky();
-        pecky.initialize();
         assert pecky.taskList != null;
-        Ui.hello();
         while (Parser.parse(pecky, Ui.getInput()) == Parser.CONTINUE);
-    }
-
-    /**
-     * Helps to initialize the list of tasks.
-     */
-
-    public void initialize() {
-        Storage.initialize();
-        taskList = Storage.getTaskList();
-        Ui.hello();
     }
 }

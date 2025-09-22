@@ -15,7 +15,11 @@ import java.util.stream.Stream;
 public class Storage {
     private static final Path taskFileFolder = Paths.get("./data");
     private static final Path taskFile = Paths.get("./data/pecky.txt");
-    private static TaskList taskList;
+    private TaskList taskList;
+
+    public Storage() {
+        initialize();
+    }
 
     /**
      * Gets the list of tasks.
@@ -23,9 +27,9 @@ public class Storage {
      * @return A TaskList representing the current list of tasks.
      */
 
-    public static TaskList getTaskList() {
-        assert Storage.taskList != null;
-        return Storage.taskList;
+    public TaskList getTaskList() {
+        assert taskList != null;
+        return taskList;
     }
 
     /**
@@ -34,7 +38,7 @@ public class Storage {
      * @param i An integer representing the task to be removed.
      */
 
-    public static void remove(int i) {
+    public void remove(int i) {
         Task taskRemoved = taskList.remove(i - 1);
         if (taskRemoved == null) {
             Ui.print("Removal of task unsuccessful. Check whether you input a valid number.");
@@ -52,7 +56,7 @@ public class Storage {
      * @param t A Task representing the task to be added.
      */
 
-    private static void addTaskSilent(Task t) {
+    private void addTaskSilent(Task t) {
         if (t == null) {
             Ui.print("Error! Task is null");
             return;
@@ -69,7 +73,7 @@ public class Storage {
      * @param t A Task representing the task to be added.
      */
 
-    public static void addTask(Task t) {
+    public void addTask(Task t) {
         if (t == null) {
             Ui.print("Error! Task is null");
             return;
@@ -89,7 +93,7 @@ public class Storage {
      */
 
 
-    public static void mark(int i) {
+    public void mark(int i) {
         assert taskList != null;
         taskList.mark(i - 1);
         writeTaskFile();
@@ -105,7 +109,7 @@ public class Storage {
      * @param i An integer representing the task to be marked not completed.
      */
 
-    public static void unmark(int i) {
+    public void unmark(int i) {
         assert taskList != null;
         taskList.unmark(i - 1);
         writeTaskFile();
@@ -114,7 +118,7 @@ public class Storage {
         Ui.print(line1 + line2);
     }
 
-    private static void readInTask(String line) {
+    private void readInTask(String line) {
         String[] args = line.split("\\|");
         Task newTask;
         if (args[0].equals("T")) {
@@ -135,7 +139,7 @@ public class Storage {
         addTaskSilent(newTask);
     }
 
-    private static void loadLines(Stream<String> lines) {
+    private void loadLines(Stream<String> lines) {
         lines.forEach(line -> {
             if (line.isEmpty()) {
                 Ui.print("Empty line in task file!");
@@ -149,7 +153,7 @@ public class Storage {
      * Reads the list of tasks from the text file.
      */
 
-    private static void loadTaskFile() {
+    private void loadTaskFile() {
         taskList = new TaskList();
         try (Stream<String> lines = Files.lines(taskFile)) {
             loadLines(lines);
@@ -167,7 +171,7 @@ public class Storage {
      * Runs everytime the program starts.
      */
 
-    public static void initialize() {
+    public void initialize() {
         try {
             Files.createDirectories(taskFileFolder);
         } catch (IOException e) {
@@ -186,7 +190,7 @@ public class Storage {
         assert taskList != null;
     }
 
-    private static void writeTaskFile() {
+    private void writeTaskFile() {
         String content = taskList.toTaskListString();
         assert content != null;
 
