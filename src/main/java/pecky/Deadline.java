@@ -89,4 +89,20 @@ public class Deadline extends Task {
         boolean deadlineIsActive = deadlineIsActivated && deadlineIsNotPassed;
         return onTheDot || deadlineIsActive;
     }
+
+    /**
+     * This method returns true if the deadline is occurring within the next 7 days,
+     * and false otherwise.
+     *
+     * @return True if the deadline is occurring within the next 7 days, and false otherwise.
+     */
+
+    public boolean upcoming() {
+        LocalDateTime currentTime = LocalDateTime.now();
+        boolean onTheDot = currentTime.isEqual(this.by);
+        boolean deadlineIsActivated = currentTime.isAfter(this.by.minusDays(7));
+        boolean deadlineIsNotPassed = currentTime.isBefore(this.by);
+        boolean deadlineIsActive = deadlineIsActivated && deadlineIsNotPassed;
+        return onTheDot || deadlineIsActive;
+    }
 }

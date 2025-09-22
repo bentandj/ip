@@ -131,6 +131,27 @@ public class Pecky {
         Ui.print(sB.toString());
     }
 
+    protected static void remind() {
+        sB = new StringBuilder();
+        sB.append("Here are the deadlines in the next 7 days in your list:\n\n");
+
+        TaskList upcomingDeadlines = new TaskList();
+        for (int i = 0; i < taskList.size(); i++) {
+            Task task = taskList.get(i);
+            if (!(task instanceof Deadline)) {
+                continue;
+            }
+
+            Deadline deadline = (Deadline) task;
+            if (deadline.upcoming()) {
+                upcomingDeadlines.add(deadline);
+            }
+        }
+        sB.append(upcomingDeadlines);
+
+        Ui.print(sB.toString());
+    }
+
     /**
      * Tells the user that the command that was input is unknown.
      */
@@ -155,6 +176,10 @@ public class Pecky {
         Ui.hello();
         while (Parser.parse(Ui.getInput()) == Parser.CONTINUE);
     }
+
+    /**
+     * Helps to initialize the list of tasks.
+     */
 
     public static void initialize() {
         Storage.initialize();

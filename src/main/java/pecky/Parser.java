@@ -64,6 +64,9 @@ public class Parser {
         case "find":
             Parser.find(s, args);
             return Parser.CONTINUE;
+        case "remind":
+            Parser.remind();
+            return Parser.CONTINUE;
         default:
             return Parser.parseAddCommands(s, args);
         }
@@ -203,6 +206,10 @@ public class Parser {
         assert s.length() > 5;
         String find = s.substring(5);
         Pecky.find(find);
+    }
+
+    private static void remind() {
+        Pecky.remind();
     }
 
     private static void unknown() {
