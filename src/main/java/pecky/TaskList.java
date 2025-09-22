@@ -144,6 +144,7 @@ public class TaskList {
     public TaskList getTasksOnDate(LocalDateTime dateTime) {
         TaskList tasksOnDate = new TaskList();
 
+        // chatgpt helped to convert the previous code to use Java stream
         taskArrayList.stream()
                 .filter(task -> task.onDay(dateTime))
                 .forEach(tasksOnDate::add);
@@ -153,6 +154,7 @@ public class TaskList {
     public TaskList getUpcomingDeadlines() {
         TaskList upcomingDeadlines = new TaskList();
 
+        // chatgpt helped to convert the previous code to use Java stream
         taskArrayList.stream()
                 .filter(task -> task instanceof Deadline)
                 .map(task -> (Deadline) task)
