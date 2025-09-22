@@ -33,16 +33,16 @@ public class Event extends Task {
     public static Event createEvent(String description, String from, String to) {
         LocalDateTime fromDate = convertStringToDate(from);
         if (fromDate == null) {
-            System.out.println("/from string pattern is invalid: " + from);
+            Ui.print("/from string pattern is invalid: " + from);
             return null;
         }
         LocalDateTime toDate = convertStringToDate(to);
         if (toDate == null) {
-            System.out.println("/to string pattern is invalid: " + to);
+            Ui.print("/to string pattern is invalid: " + to);
             return null;
         }
         if (fromDate.isAfter(toDate)) {
-            System.out.println("From date must be before the to date.");
+            Ui.print("From date must be before the to date.");
             return null;
         }
         return new Event(description, fromDate, toDate);

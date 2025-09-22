@@ -28,7 +28,7 @@ public class Deadline extends Task {
     public static Deadline createDeadline(String description, String by) {
         LocalDateTime byDate = convertStringToDate(by);
         if (byDate == null) {
-            System.out.println("/from string pattern is invalid: " + by);
+            Ui.print("/from string pattern is invalid: " + by);
             return null;
         }
         return new Deadline(description, byDate);
