@@ -41,6 +41,7 @@ public class TaskList {
         if (i < 0 || i >= size()) {
             return null;
         }
+        assert !taskArrayList.isEmpty();
         Task taskRemoved = taskArrayList.get(i);
         taskArrayList.remove(i);
         return taskRemoved;
@@ -67,6 +68,7 @@ public class TaskList {
         if (i < 0 || i >= size()) {
             return null;
         }
+        assert !taskArrayList.isEmpty();
         return taskArrayList.get(i);
     }
 
@@ -80,6 +82,7 @@ public class TaskList {
         if (i < 0 || i >= size()) {
             return;
         }
+        assert !taskArrayList.isEmpty();
         taskArrayList.get(i).markDone();
     }
 
@@ -93,6 +96,7 @@ public class TaskList {
         if (i < 0 || i >= size()) {
             return;
         }
+        assert !taskArrayList.isEmpty();
         taskArrayList.get(i).markNotDone();
     }
 
@@ -128,6 +132,9 @@ public class TaskList {
      */
 
     public String toTaskListString() {
+        if (size() <= 0) {
+            return "";
+        }
         return taskArrayList.stream()
                 .map(Task::toTaskListString)
                 .collect(Collectors.joining("\n"));

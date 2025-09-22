@@ -24,6 +24,7 @@ public class Storage {
      */
 
     public static TaskList getTaskList() {
+        assert Storage.taskList != null;
         return Storage.taskList;
     }
 
@@ -51,6 +52,11 @@ public class Storage {
      */
 
     private static void addTaskSilent(Task t) {
+        if (t == null) {
+            Ui.print("Error! Task is null");
+            return;
+        }
+        assert taskList != null;
         taskList.add(t);
         writeTaskFile();
     }
@@ -63,6 +69,11 @@ public class Storage {
      */
 
     public static void addTask(Task t) {
+        if (t == null) {
+            Ui.print("Error! Task is null");
+            return;
+        }
+        assert taskList != null;
         addTaskSilent(t);
         Ui.print("Got it. I've added this task: \n  "
                 + t + "\nNow you have " + taskList.size() + " tasks in the list.");
@@ -77,6 +88,7 @@ public class Storage {
 
 
     public static void mark(int i) {
+        assert taskList != null;
         taskList.mark(i - 1);
         writeTaskFile();
         Ui.print("Nice! I've marked this task as done:\n  " + taskList.get(i - 1).toString());
@@ -90,6 +102,7 @@ public class Storage {
      */
 
     public static void unmark(int i) {
+        assert taskList != null;
         taskList.unmark(i - 1);
         writeTaskFile();
         Ui.print("OK, I've marked this task as not done yet:\n  " + taskList.get(i - 1).toString());
@@ -130,6 +143,7 @@ public class Storage {
             System.err.println("Error reading file: " + e.getMessage());
             e.printStackTrace();
         }
+        assert taskList != null;
     }
 
     /**
@@ -155,10 +169,12 @@ public class Storage {
         }
 
         loadTaskFile();
+        assert taskList != null;
     }
 
     private static void writeTaskFile() {
         String content = taskList.toTaskListString();
+        assert content != null;
 
         try {
             Files.writeString(taskFile, content, StandardOpenOption.CREATE, StandardOpenOption.TRUNCATE_EXISTING);

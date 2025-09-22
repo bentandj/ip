@@ -14,6 +14,8 @@ public class Event extends Task {
 
     private Event(String description, LocalDateTime from, LocalDateTime to) {
         super(description);
+        assert from != null;
+        assert to != null;
         this.from = from;
         this.to = to;
     }
@@ -79,6 +81,8 @@ public class Event extends Task {
     public String toTaskListString() {
         String formattedFrom = this.from.format(TO_TASK_LIST_STRING_FORMATTER);
         String formattedTo = this.to.format(TO_TASK_LIST_STRING_FORMATTER);
+        assert formattedFrom.length() > 1;
+        assert formattedTo.length() > 1;
         return "E|" + (this.isDone ? 1 : 0) + "|" + this.description + "|" + formattedFrom + "|" + formattedTo;
     }
 

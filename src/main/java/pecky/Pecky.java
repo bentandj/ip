@@ -151,6 +151,7 @@ public class Pecky {
     public static void main(String[] args) {
         Storage.initialize();
         taskList = Storage.getTaskList();
+        assert Pecky.taskList != null;
         Ui.hello();
         while (Parser.parse(Ui.getInput()) == 0);
     }
