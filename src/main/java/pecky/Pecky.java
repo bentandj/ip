@@ -10,14 +10,14 @@ import java.time.LocalDateTime;
 
 public class Pecky {
 
-    private static StringBuilder sB = new StringBuilder();
-    private static TaskList taskList;
+    private StringBuilder sB = new StringBuilder();
+    private TaskList taskList;
 
     /**
      * Lists out all the tasks to the user.
      */
 
-    protected static void list() {
+    protected void list() {
         Ui.print("Here are the tasks in your list:\n\n" + taskList);
     }
 
@@ -27,7 +27,7 @@ public class Pecky {
      * @param index An integer representing the task to be marked completed.
      */
 
-    protected static void mark(int index) {
+    protected void mark(int index) {
         Storage.mark(index);
     }
 
@@ -37,7 +37,7 @@ public class Pecky {
      * @param index An integer representing the task to be marked not completed.
      */
 
-    protected static void unmark(int index) {
+    protected void unmark(int index) {
         Storage.unmark(index);
     }
 
@@ -47,7 +47,7 @@ public class Pecky {
      * @param description A string representing the description of the Todo.
      */
 
-    protected static void todo(String description) {
+    protected void todo(String description) {
         Storage.addTask(new Todo(description));
     }
 
@@ -58,7 +58,7 @@ public class Pecky {
      * @param by A string representing the date and time of the Deadline.
      */
 
-    protected static void deadline(String description, String by) {
+    protected void deadline(String description, String by) {
         Storage.addTask(Deadline.createDeadline(description, by));
     }
 
@@ -70,7 +70,7 @@ public class Pecky {
      * @param to A string representing the date and time of the end of the Event.
      */
 
-    protected static void event(String description, String from, String to) {
+    protected void event(String description, String from, String to) {
         Storage.addTask(Event.createEvent(description, from, to));
     }
 
@@ -80,7 +80,7 @@ public class Pecky {
      * @param index An integer representing the task to be removed.
      */
 
-    protected static void delete(int index) {
+    protected void delete(int index) {
         Storage.remove(index - 1);
     }
 
@@ -90,7 +90,7 @@ public class Pecky {
      * @param dateTime A LocalDateTime representing the given date.
      */
 
-    protected static void tasksOnDate(LocalDateTime dateTime) {
+    protected void tasksOnDate(LocalDateTime dateTime) {
         sB = new StringBuilder();
         sB.append("Here are the tasks on ");
         sB.append(dateTime.format(Task.TO_STRING_FORMATTER));
@@ -111,12 +111,12 @@ public class Pecky {
      * Says bye to the user and exits the program.
      */
 
-    protected static void bye() {
+    protected void bye() {
         Ui.bye();
         System.exit(0);
     }
 
-    protected static void find(String s) {
+    protected void find(String s) {
         sB = new StringBuilder();
         sB.append("Here are the matching tasks in your list:\n\n");
 
@@ -131,7 +131,7 @@ public class Pecky {
         Ui.print(sB.toString());
     }
 
-    protected static void remind() {
+    protected void remind() {
         sB = new StringBuilder();
         sB.append("Here are the deadlines in the next 7 days in your list:\n\n");
 
@@ -156,7 +156,7 @@ public class Pecky {
      * Tells the user that the command that was input is unknown.
      */
 
-    protected static void unknown() {
+    protected void unknown() {
         Ui.unknown();
     }
 
@@ -170,18 +170,18 @@ public class Pecky {
      */
 
     public static void main(String[] args) {
-        Storage.initialize();
-        taskList = Storage.getTaskList();
-        assert Pecky.taskList != null;
+        Pecky pecky = new Pecky();
+        pecky.initialize();
+        assert pecky.taskList != null;
         Ui.hello();
-        while (Parser.parse(Ui.getInput()) == Parser.CONTINUE);
+        while (Parser.parse(pecky, Ui.getInput()) == Parser.CONTINUE);
     }
 
     /**
      * Helps to initialize the list of tasks.
      */
 
-    public static void initialize() {
+    public void initialize() {
         Storage.initialize();
         taskList = Storage.getTaskList();
         Ui.hello();

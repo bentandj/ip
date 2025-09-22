@@ -43,7 +43,7 @@ public class MainWindow extends AnchorPane {
     private void handleUserInput() {
         String input = userInput.getText();
         printUserInput(input);
-        Parser.parse(input);
+        Parser.parse(pecky, input);
         userInput.clear();
     }
 

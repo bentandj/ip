@@ -25,7 +25,7 @@ public class Main extends Application {
             Scene scene = new Scene(ap);
             stage.setScene(scene);
             fxmlLoader.<MainWindow>getController().setPecky(pecky);  // inject the Pecky instance
-            Pecky.initialize();
+            pecky.initialize();
             stage.show();
         } catch (IOException e) {
             e.printStackTrace();

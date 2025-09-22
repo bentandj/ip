@@ -22,15 +22,15 @@ public class Parser {
      * @return The integer 1 if the program should be terminated, and 0 otherwise.
      */
 
-    public static int parse(String s) {
+    public static int parse(Pecky pecky, String s) {
         String[] args = s.split(" ");
 
         switch (args[0]) {
         case "bye":
-            Parser.bye();
+            Parser.bye(pecky);
             return Parser.EXIT;
         default:
-            return parseTaskListCommands(s, args);
+            return parseTaskListCommands(pecky, s, args);
         }
     }
 
@@ -44,31 +44,31 @@ public class Parser {
      * @return The integer 1 if the program should be terminated, and 0 otherwise.
      */
 
-    public static int parseTaskListCommands(String s, String[] args) {
+    public static int parseTaskListCommands(Pecky pecky, String s, String[] args) {
         switch (args[0]) {
         case "list":
-            Parser.list();
+            Parser.list(pecky);
             return Parser.CONTINUE;
         case "mark":
-            Parser.mark(s);
+            Parser.mark(pecky, s);
             return Parser.CONTINUE;
         case "unmark":
-            Parser.unmark(s);
+            Parser.unmark(pecky, s);
             return Parser.CONTINUE;
         case "delete":
-            Parser.delete(s);
+            Parser.delete(pecky, s);
             return Parser.CONTINUE;
         case "date":
-            Parser.date(s, args);
+            Parser.date(pecky, s, args);
             return Parser.CONTINUE;
         case "find":
-            Parser.find(s, args);
+            Parser.find(pecky, s, args);
             return Parser.CONTINUE;
         case "remind":
-            Parser.remind();
+            Parser.remind(pecky);
             return Parser.CONTINUE;
         default:
-            return Parser.parseAddCommands(s, args);
+            return Parser.parseAddCommands(pecky, s, args);
         }
     }
 
@@ -82,32 +82,32 @@ public class Parser {
      * @return The integer 1 if the program should be terminated, and 0 otherwise.
      */
 
-    public static int parseAddCommands(String s, String[] args) {
+    public static int parseAddCommands(Pecky pecky, String s, String[] args) {
         switch (args[0]) {
         case "todo":
-            Parser.todo(s, args);
+            Parser.todo(pecky, s, args);
             return Parser.CONTINUE;
         case "deadline":
-            Parser.deadline(s);
+            Parser.deadline(pecky, s);
             return Parser.CONTINUE;
         case "event":
-            Parser.event(s);
+            Parser.event(pecky, s);
             return Parser.CONTINUE;
         default:
-            Parser.unknown();
+            Parser.unknown(pecky);
             return Parser.CONTINUE;
         }
     }
 
-    private static void bye() {
-        Pecky.bye();
+    private static void bye(Pecky pecky) {
+        pecky.bye();
     }
 
-    private static void list() {
-        Pecky.list();
+    private static void list(Pecky pecky) {
+        pecky.list();
     }
 
-    private static void mark(String s) {
+    private static void mark(Pecky pecky, String s) {
         if (s.length() <= 5) {
             Ui.print("OOPS!!! You must choose a task to mark completed.");
             return;
@@ -119,10 +119,10 @@ public class Parser {
             Ui.print("Must be integer! " + e.getMessage());
             return;
         }
-        Pecky.mark(index);
+        pecky.mark(index);
     }
 
-    private static void unmark(String s) {
+    private static void unmark(Pecky pecky, String s) {
         if (s.length() <= 7) {
             Ui.print("OOPS!!! You must choose a task to mark uncompleted.");
             return;
@@ -134,19 +134,19 @@ public class Parser {
             Ui.print("Must be integer! " + e.getMessage());
             return;
         }
-        Pecky.unmark(index);
+        pecky.unmark(index);
     }
 
-    private static void todo(String s, String[] args) {
+    private static void todo(Pecky pecky, String s, String[] args) {
         if (args.length == 1) {
             Ui.print("OOPS!!! The description of a todo cannot be empty.");
             return;
         }
         String description = s.substring(5);
-        Pecky.todo(description);
+        pecky.todo(description);
     }
 
-    private static void deadline(String s) {
+    private static void deadline(Pecky pecky, String s) {
         if (s.length() <= 9) {
             Ui.print("OOPS!!! The syntax of the command is 'deadline [description] /by [date / datetime]");
             return;
@@ -155,10 +155,10 @@ public class Parser {
         String[] parts = s.split(" /by ");
         String description = parts[0].trim();
         String by = parts[1].trim();
-        Pecky.deadline(description, by);
+        pecky.deadline(description, by);
     }
 
-    private static void event(String s) {
+    private static void event(Pecky pecky, String s) {
         if (s.length() <= 6) {
             Ui.print("OOPS!!! The syntax of the command is "
                     + "'event [description] /from [date / datetime] /to [date / datetime]");
@@ -170,19 +170,19 @@ public class Parser {
         String[] timeParts = parts[1].split(" /to ");
         String from = timeParts[0];
         String to = timeParts[1];
-        Pecky.event(description, from, to);
+        pecky.event(description, from, to);
     }
 
-    private static void delete(String s) {
+    private static void delete(Pecky pecky, String s) {
         if (s.length() <= 7) {
             Ui.print("OOPS!!! You must choose a task (input its index as an integer) to delete!");
             return;
         }
         int index = Integer.parseInt(s.substring(7));
-        Pecky.delete(index);
+        pecky.delete(index);
     }
 
-    private static void date(String s, String[] args) {
+    private static void date(Pecky pecky, String s, String[] args) {
         if (args.length == 1) {
             Ui.print("OOPS!!! You must specify a date.");
             return;
@@ -195,24 +195,24 @@ public class Parser {
             Ui.print("Your date format is invalid!");
             return;
         }
-        Pecky.tasksOnDate(dateTime);
+        pecky.tasksOnDate(dateTime);
     }
 
-    private static void find(String s, String[] args) {
+    private static void find(Pecky pecky, String s, String[] args) {
         if (args.length == 1) {
             Ui.print("OOPS!!! You must specify what you're trying to find.");
             return;
         }
         assert s.length() > 5;
         String find = s.substring(5);
-        Pecky.find(find);
+        pecky.find(find);
     }
 
-    private static void remind() {
-        Pecky.remind();
+    private static void remind(Pecky pecky) {
+        pecky.remind();
     }
 
-    private static void unknown() {
-        Pecky.unknown();
+    private static void unknown(Pecky pecky) {
+        pecky.unknown();
     }
 }
