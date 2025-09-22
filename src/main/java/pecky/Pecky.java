@@ -93,7 +93,7 @@ public class Pecky {
      */
 
     protected void delete(int index) {
-        storage.remove(index - 1);
+        storage.remove(index);
     }
 
     /**
