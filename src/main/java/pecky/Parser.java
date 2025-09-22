@@ -26,6 +26,23 @@ public class Parser {
         case "bye":
             Parser.bye();
             return 1;
+        default:
+            return parseTaskListCommands(s, args);
+        }
+    }
+
+    /**
+     * Second step in parsing user commands.
+     * If user input is invalid, helpful error messages are output to the user.
+     * Else, the relevant functions in Pecky are called.
+     * It returns 1 to signal the termination of the program, and 0 otherwise.
+     *
+     * @param s A string representing the user command.
+     * @return The integer 1 if the program should be terminated, and 0 otherwise.
+     */
+
+    public static int parseTaskListCommands(String s, String[] args) {
+        switch (args[0]) {
         case "list":
             Parser.list();
             return 0;
@@ -35,15 +52,6 @@ public class Parser {
         case "unmark":
             Parser.unmark(s);
             return 0;
-        case "todo":
-            Parser.todo(s, args);
-            return 0;
-        case "deadline":
-            Parser.deadline(s);
-            return 0;
-        case "event":
-            Parser.event(s);
-            return 0;
         case "delete":
             Parser.delete(s);
             return 0;
@@ -52,6 +60,32 @@ public class Parser {
             return 0;
         case "find":
             Parser.find(s, args);
+            return 0;
+        default:
+            return Parser.parseAddCommands(s, args);
+        }
+    }
+
+    /**
+     * Third step in parsing user commands.
+     * If user input is invalid, helpful error messages are output to the user.
+     * Else, the relevant functions in Pecky are called.
+     * It returns 1 to signal the termination of the program, and 0 otherwise.
+     *
+     * @param s A string representing the user command.
+     * @return The integer 1 if the program should be terminated, and 0 otherwise.
+     */
+
+    public static int parseAddCommands(String s, String[] args) {
+        switch (args[0]) {
+        case "todo":
+            Parser.todo(s, args);
+            return 0;
+        case "deadline":
+            Parser.deadline(s);
+            return 0;
+        case "event":
+            Parser.event(s);
             return 0;
         default:
             Parser.unknown();
