@@ -119,7 +119,11 @@ public class Parser {
             Ui.print("Must be integer! " + e.getMessage());
             return;
         }
-        pecky.mark(index);
+        try {
+            pecky.mark(index);
+        } catch (Exception e) {
+            Ui.print("Check that the index you input is the correct index!");
+        }
     }
 
     private static void unmark(Pecky pecky, String s) {
@@ -134,7 +138,11 @@ public class Parser {
             Ui.print("Must be integer! " + e.getMessage());
             return;
         }
-        pecky.unmark(index);
+        try {
+            pecky.unmark(index);
+        } catch (Exception e) {
+            Ui.print("Check that the index you input is the correct index!");
+        }
     }
 
     private static void todo(Pecky pecky, String s, String[] args) {
