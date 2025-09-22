@@ -116,6 +116,16 @@ public class Storage {
         addTaskSilent(newTask);
     }
 
+    private static void loadLines(Stream<String> lines) {
+        lines.forEach(line -> {
+            if (line.isEmpty()) {
+                Ui.print("Empty line in task file!");
+                return;
+            }
+            readInTask(line);
+        });
+    }
+
     /**
      * Reads the list of tasks from the text file.
      */
@@ -123,13 +133,7 @@ public class Storage {
     private static void loadTaskFile() {
         taskList = new TaskList();
         try (Stream<String> lines = Files.lines(taskFile)) {
-            lines.forEach(line -> {
-                if (line.isEmpty()) {
-                    Ui.print("Empty line in task file!");
-                    return;
-                }
-                readInTask(line);
-            });
+            loadLines(lines);
         } catch (IOException e) {
             System.err.println("Error reading file: " + e.getMessage());
             e.printStackTrace();
