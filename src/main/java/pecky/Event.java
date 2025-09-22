@@ -81,7 +81,8 @@ public class Event extends Task {
     public String toTaskListString() {
         String formattedFrom = this.from.format(TO_TASK_LIST_STRING_FORMATTER);
         String formattedTo = this.to.format(TO_TASK_LIST_STRING_FORMATTER);
-        String name = "E|" + (this.isDone ? 1 : 0) + "|" + this.description;
+        int done = this.isDone ? DONE : NOT_DONE;
+        String name = "E|" + done + "|" + this.description;
         String duration = "|" + formattedFrom + "|" + formattedTo;
         return name + duration;
     }

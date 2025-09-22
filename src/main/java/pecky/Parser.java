@@ -9,6 +9,9 @@ import java.time.LocalDateTime;
 
 public class Parser {
 
+    public static final int EXIT = 1;
+    public static final int CONTINUE = 0;
+
     /**
      * Parses user commands.
      * If user input is invalid, helpful error messages are output to the user.
@@ -25,7 +28,7 @@ public class Parser {
         switch (args[0]) {
         case "bye":
             Parser.bye();
-            return 1;
+            return Parser.EXIT;
         default:
             return parseTaskListCommands(s, args);
         }
@@ -45,22 +48,22 @@ public class Parser {
         switch (args[0]) {
         case "list":
             Parser.list();
-            return 0;
+            return Parser.CONTINUE;
         case "mark":
             Parser.mark(s);
-            return 0;
+            return Parser.CONTINUE;
         case "unmark":
             Parser.unmark(s);
-            return 0;
+            return Parser.CONTINUE;
         case "delete":
             Parser.delete(s);
-            return 0;
+            return Parser.CONTINUE;
         case "date":
             Parser.date(s, args);
-            return 0;
+            return Parser.CONTINUE;
         case "find":
             Parser.find(s, args);
-            return 0;
+            return Parser.CONTINUE;
         default:
             return Parser.parseAddCommands(s, args);
         }
@@ -80,16 +83,16 @@ public class Parser {
         switch (args[0]) {
         case "todo":
             Parser.todo(s, args);
-            return 0;
+            return Parser.CONTINUE;
         case "deadline":
             Parser.deadline(s);
-            return 0;
+            return Parser.CONTINUE;
         case "event":
             Parser.event(s);
-            return 0;
+            return Parser.CONTINUE;
         default:
             Parser.unknown();
-            return 0;
+            return Parser.CONTINUE;
         }
     }
 

@@ -65,7 +65,8 @@ public class Deadline extends Task {
     @Override
     public String toTaskListString() {
         String formattedDate = this.by.format(TO_TASK_LIST_STRING_FORMATTER);
-        String name = "D|" + (this.isDone ? 1 : 0) + "|" + this.description;
+        int done = this.isDone ? DONE : NOT_DONE;
+        String name = "D|" + done + "|" + this.description;
         String by = "|" + formattedDate;
         return name + by;
     }

@@ -152,7 +152,7 @@ public class Pecky {
         Storage.initialize();
         taskList = Storage.getTaskList();
         Ui.hello();
-        while (Parser.parse(Ui.getInput()) == 0);
+        while (Parser.parse(Ui.getInput()) == Parser.CONTINUE);
     }
 
     public static void initialize() {
