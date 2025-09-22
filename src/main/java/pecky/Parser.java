@@ -105,6 +105,10 @@ public class Parser {
     }
 
     private static void mark(String s) {
+        if (s.length() <= 5) {
+            Ui.print("OOPS!!! You must choose a task to mark completed.");
+            return;
+        }
         int index;
         try {
             index = Integer.parseInt(s.substring(5));
@@ -116,6 +120,10 @@ public class Parser {
     }
 
     private static void unmark(String s) {
+        if (s.length() <= 7) {
+            Ui.print("OOPS!!! You must choose a task to mark uncompleted.");
+            return;
+        }
         int index;
         try {
             index = Integer.parseInt(s.substring(7));
@@ -136,6 +144,10 @@ public class Parser {
     }
 
     private static void deadline(String s) {
+        if (s.length() <= 9) {
+            Ui.print("OOPS!!! The syntax of the command is 'deadline [description] /by [date / datetime]");
+            return;
+        }
         s = s.substring(9).trim();
         String[] parts = s.split(" /by ");
         String description = parts[0].trim();
@@ -144,6 +156,11 @@ public class Parser {
     }
 
     private static void event(String s) {
+        if (s.length() <= 6) {
+            Ui.print("OOPS!!! The syntax of the command is "
+                    + "'event [description] /from [date / datetime] /to [date / datetime]");
+            return;
+        }
         s = s.substring(6).trim();
         String[] parts = s.split(" /from ");
         String description = parts[0].trim();
@@ -154,6 +171,10 @@ public class Parser {
     }
 
     private static void delete(String s) {
+        if (s.length() <= 7) {
+            Ui.print("OOPS!!! You must choose a task (input its index as an integer) to delete!");
+            return;
+        }
         int index = Integer.parseInt(s.substring(7));
         Pecky.delete(index);
     }
@@ -163,6 +184,7 @@ public class Parser {
             Ui.print("OOPS!!! You must specify a date.");
             return;
         }
+        assert s.length() > 5;
         String dateString = s.substring(5);
 
         LocalDateTime dateTime = Task.convertStringToDate(dateString);
@@ -178,6 +200,7 @@ public class Parser {
             Ui.print("OOPS!!! You must specify what you're trying to find.");
             return;
         }
+        assert s.length() > 5;
         String find = s.substring(5);
         Pecky.find(find);
     }

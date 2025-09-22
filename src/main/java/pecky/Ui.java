@@ -18,6 +18,7 @@ public class Ui {
     private static final Scanner scanner = new Scanner(System.in);
 
     public static void setMainWindow(MainWindow mainWindow) {
+        assert mainWindow != null;
         Ui.mainWindow = mainWindow;
     }
 

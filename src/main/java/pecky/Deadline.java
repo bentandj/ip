@@ -13,6 +13,7 @@ public class Deadline extends Task {
 
     private Deadline(String description, LocalDateTime by) {
         super(description);
+        assert by != null;
         this.by = by;
     }
 
@@ -28,7 +29,7 @@ public class Deadline extends Task {
     public static Deadline createDeadline(String description, String by) {
         LocalDateTime byDate = convertStringToDate(by);
         if (byDate == null) {
-            Ui.print("/from string pattern is invalid: " + by);
+            Ui.print("/by string pattern is invalid: " + by);
             return null;
         }
         return new Deadline(description, byDate);
