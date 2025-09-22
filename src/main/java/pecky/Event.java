@@ -62,7 +62,9 @@ public class Event extends Task {
     public String toString() {
         String formattedFrom = this.from.format(TO_STRING_FORMATTER);
         String formattedTo = this.to.format(TO_STRING_FORMATTER);
-        return "[E]" + super.toString() + " (from: " + formattedFrom + " to: " + formattedTo + ")";
+        String name = "[E]" + super.toString();
+        String duration = "(from: " + formattedFrom + " to: " + formattedTo + ")";
+        return name + " " + duration;
     }
 
     /**
@@ -79,7 +81,9 @@ public class Event extends Task {
     public String toTaskListString() {
         String formattedFrom = this.from.format(TO_TASK_LIST_STRING_FORMATTER);
         String formattedTo = this.to.format(TO_TASK_LIST_STRING_FORMATTER);
-        return "E|" + (this.isDone ? 1 : 0) + "|" + this.description + "|" + formattedFrom + "|" + formattedTo;
+        String name = "E|" + (this.isDone ? 1 : 0) + "|" + this.description;
+        String duration = "|" + formattedFrom + "|" + formattedTo;
+        return name + duration;
     }
 
     /**
@@ -93,6 +97,8 @@ public class Event extends Task {
 
     @Override
     public boolean onDay(LocalDateTime dateTime) {
-        return dateTime.isAfter(this.from.minusDays(1)) && dateTime.isBefore(this.to);
+        boolean eventIsActivated = dateTime.isAfter(this.from.minusDays(1));
+        boolean eventIsNotPassed = dateTime.isBefore(this.to);
+        return eventIsActivated && eventIsNotPassed;
     }
 }

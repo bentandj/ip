@@ -40,8 +40,9 @@ public class Storage {
             return;
         }
         writeTaskFile();
-        Ui.print("Noted. I've removed this task:\n  "
-                + taskRemoved + "\nNow you have " + taskList.size() + " tasks in the list.");
+        String line1 = "Noted. I've removed this task:\n  " + taskRemoved;
+        String line2 = "\nNow you have " + taskList.size() + " tasks in the list.";
+        Ui.print(line1 + line2);
     }
 
     /**
@@ -64,8 +65,9 @@ public class Storage {
 
     public static void addTask(Task t) {
         addTaskSilent(t);
-        Ui.print("Got it. I've added this task: \n  "
-                + t + "\nNow you have " + taskList.size() + " tasks in the list.");
+        String line1 = "Got it. I've added this task: \n  " + t;
+        String line2 = "\nNow you have " + taskList.size() + " tasks in the list.";
+        Ui.print(line1 + line2);
     }
 
     /**
@@ -79,7 +81,9 @@ public class Storage {
     public static void mark(int i) {
         taskList.mark(i - 1);
         writeTaskFile();
-        Ui.print("Nice! I've marked this task as done:\n  " + taskList.get(i - 1).toString());
+        String line1 = "Nice! I've marked this task as done:";
+        String line2 = "\n  " + taskList.get(i - 1).toString();
+        Ui.print(line1 + line2);
     }
 
     /**
@@ -92,7 +96,9 @@ public class Storage {
     public static void unmark(int i) {
         taskList.unmark(i - 1);
         writeTaskFile();
-        Ui.print("OK, I've marked this task as not done yet:\n  " + taskList.get(i - 1).toString());
+        String line1 = "OK, I've marked this task as not done yet:";
+        String line2 = "\n  " + taskList.get(i - 1).toString();
+        Ui.print(line1 + line2);
     }
 
     private static void readInTask(String line) {

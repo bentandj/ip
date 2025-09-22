@@ -47,7 +47,9 @@ public class Deadline extends Task {
     @Override
     public String toString() {
         String formattedDate = this.by.format(TO_STRING_FORMATTER);
-        return "[D]" + super.toString() + " (by: " + formattedDate + ")";
+        String name = "[D]" + super.toString();
+        String by = "(by: " + formattedDate + ")";
+        return name + " " + by;
     }
 
     /**
@@ -63,7 +65,9 @@ public class Deadline extends Task {
     @Override
     public String toTaskListString() {
         String formattedDate = this.by.format(TO_TASK_LIST_STRING_FORMATTER);
-        return "D|" + (this.isDone ? 1 : 0) + "|" + this.description + "|" + formattedDate;
+        String name = "D|" + (this.isDone ? 1 : 0) + "|" + this.description;
+        String by = "|" + formattedDate;
+        return name + by;
     }
 
     /**
@@ -77,7 +81,10 @@ public class Deadline extends Task {
 
     @Override
     public boolean onDay(LocalDateTime dateTime) {
-        return dateTime.isEqual(this.by)
-                || (dateTime.isAfter(this.by.minusDays(1)) && dateTime.isBefore(this.by));
+        boolean onTheDot = dateTime.isEqual(this.by);
+        boolean deadlineIsActivated = dateTime.isAfter(this.by.minusDays(1));
+        boolean deadlineIsNotPassed = dateTime.isBefore(this.by);
+        boolean deadlineIsActive = deadlineIsActivated && deadlineIsNotPassed;
+        return onTheDot || deadlineIsActive;
     }
 }
